@@ -1,0 +1,35 @@
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+      <title>Welcome to knowledge</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="app"></div>
+    </div>
+    {% if dev %}
+      <div id="debug"></div>
+    {% endif %}
+
+    <!-- scripts and styles -->
+    {% style "/css/screen.css" %}
+
+    <script type="text/javascript">
+        var context = "{{servlet-context}}";
+        var development = {{dev}};
+    </script>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="js/dist/materialize-minimal.min.js"></script>
+    {% if dev %}
+      <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.js"></script>
+      {% script "/js/out/goog/base.js" %}
+      {% script "/js/app.js" %}
+      <script type="text/javascript">goog.require("knowledge.app");</script>
+    {% else %}
+      <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.min.js"></script>
+      {% script "/js/app.js" %}
+    {% endif %}
+  </body>
+</html>
