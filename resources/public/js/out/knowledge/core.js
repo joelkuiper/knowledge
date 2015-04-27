@@ -18,7 +18,7 @@ cljs.core.println.call(null,new_path);
 return cljs.core.swap_BANG_.call(null,knowledge.core.app_state,cljs.core.assoc_in,new_path,cljs.core.PersistentArrayMap.EMPTY);
 });
 knowledge.core.socket_button = (function knowledge$core$socket_button(path){
-return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"a.btn-flat.waves-effect.waves","a.btn-flat.waves-effect.waves",-1815255157),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"on-click","on-click",1632826543),(function (){
+return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"a.btn-flat.waves-effect.waves-teal","a.btn-flat.waves-effect.waves-teal",-1413370250),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"style","style",-496642736),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"color","color",1011675173),"#343434"], null),new cljs.core.Keyword(null,"on-click","on-click",1632826543),(function (){
 return knowledge.core.fill_socket.call(null,path,null);
 })], null),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"i.mdi-content-add","i.mdi-content-add",-22739464)], null)], null);
 });
@@ -30,30 +30,30 @@ return [cljs.core.str("grey.lighten-"),cljs.core.str(((6) - depth))].join('');
 }
 });
 knowledge.core.child_plates = (function knowledge$core$child_plates(path){
-var iter__29127__auto__ = (function knowledge$core$child_plates_$_iter__31419(s__31420){
+var iter__29127__auto__ = (function knowledge$core$child_plates_$_iter__31747(s__31748){
 return (new cljs.core.LazySeq(null,(function (){
-var s__31420__$1 = s__31420;
+var s__31748__$1 = s__31748;
 while(true){
-var temp__4126__auto__ = cljs.core.seq.call(null,s__31420__$1);
+var temp__4126__auto__ = cljs.core.seq.call(null,s__31748__$1);
 if(temp__4126__auto__){
-var s__31420__$2 = temp__4126__auto__;
-if(cljs.core.chunked_seq_QMARK_.call(null,s__31420__$2)){
-var c__29125__auto__ = cljs.core.chunk_first.call(null,s__31420__$2);
+var s__31748__$2 = temp__4126__auto__;
+if(cljs.core.chunked_seq_QMARK_.call(null,s__31748__$2)){
+var c__29125__auto__ = cljs.core.chunk_first.call(null,s__31748__$2);
 var size__29126__auto__ = cljs.core.count.call(null,c__29125__auto__);
-var b__31422 = cljs.core.chunk_buffer.call(null,size__29126__auto__);
-if((function (){var i__31421 = (0);
+var b__31750 = cljs.core.chunk_buffer.call(null,size__29126__auto__);
+if((function (){var i__31749 = (0);
 while(true){
-if((i__31421 < size__29126__auto__)){
-var vec__31427 = cljs.core._nth.call(null,c__29125__auto__,i__31421);
-var id = cljs.core.nth.call(null,vec__31427,(0),null);
-var map__31428 = cljs.core.nth.call(null,vec__31427,(1),null);
-var map__31428__$1 = ((cljs.core.seq_QMARK_.call(null,map__31428))?cljs.core.apply.call(null,cljs.core.hash_map,map__31428):map__31428);
-var type = cljs.core.get.call(null,map__31428__$1,new cljs.core.Keyword(null,"type","type",1174270348));
-var plates = cljs.core.get.call(null,map__31428__$1,new cljs.core.Keyword(null,"plates","plates",358109965));
-cljs.core.chunk_append.call(null,b__31422,cljs.core.with_meta(new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [knowledge.core.plate,cljs.core.conj.call(null,path,id),type,plates], null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"key","key",-1516042587),id], null)));
+if((i__31749 < size__29126__auto__)){
+var vec__31755 = cljs.core._nth.call(null,c__29125__auto__,i__31749);
+var id = cljs.core.nth.call(null,vec__31755,(0),null);
+var map__31756 = cljs.core.nth.call(null,vec__31755,(1),null);
+var map__31756__$1 = ((cljs.core.seq_QMARK_.call(null,map__31756))?cljs.core.apply.call(null,cljs.core.hash_map,map__31756):map__31756);
+var type = cljs.core.get.call(null,map__31756__$1,new cljs.core.Keyword(null,"type","type",1174270348));
+var plates = cljs.core.get.call(null,map__31756__$1,new cljs.core.Keyword(null,"plates","plates",358109965));
+cljs.core.chunk_append.call(null,b__31750,cljs.core.with_meta(new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [knowledge.core.plate,cljs.core.conj.call(null,path,id),type,plates], null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"key","key",-1516042587),id], null)));
 
-var G__31431 = (i__31421 + (1));
-i__31421 = G__31431;
+var G__31759 = (i__31749 + (1));
+i__31749 = G__31759;
 continue;
 } else {
 return true;
@@ -61,18 +61,18 @@ return true;
 break;
 }
 })()){
-return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__31422),knowledge$core$child_plates_$_iter__31419.call(null,cljs.core.chunk_rest.call(null,s__31420__$2)));
+return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__31750),knowledge$core$child_plates_$_iter__31747.call(null,cljs.core.chunk_rest.call(null,s__31748__$2)));
 } else {
-return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__31422),null);
+return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__31750),null);
 }
 } else {
-var vec__31429 = cljs.core.first.call(null,s__31420__$2);
-var id = cljs.core.nth.call(null,vec__31429,(0),null);
-var map__31430 = cljs.core.nth.call(null,vec__31429,(1),null);
-var map__31430__$1 = ((cljs.core.seq_QMARK_.call(null,map__31430))?cljs.core.apply.call(null,cljs.core.hash_map,map__31430):map__31430);
-var type = cljs.core.get.call(null,map__31430__$1,new cljs.core.Keyword(null,"type","type",1174270348));
-var plates = cljs.core.get.call(null,map__31430__$1,new cljs.core.Keyword(null,"plates","plates",358109965));
-return cljs.core.cons.call(null,cljs.core.with_meta(new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [knowledge.core.plate,cljs.core.conj.call(null,path,id),type,plates], null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"key","key",-1516042587),id], null)),knowledge$core$child_plates_$_iter__31419.call(null,cljs.core.rest.call(null,s__31420__$2)));
+var vec__31757 = cljs.core.first.call(null,s__31748__$2);
+var id = cljs.core.nth.call(null,vec__31757,(0),null);
+var map__31758 = cljs.core.nth.call(null,vec__31757,(1),null);
+var map__31758__$1 = ((cljs.core.seq_QMARK_.call(null,map__31758))?cljs.core.apply.call(null,cljs.core.hash_map,map__31758):map__31758);
+var type = cljs.core.get.call(null,map__31758__$1,new cljs.core.Keyword(null,"type","type",1174270348));
+var plates = cljs.core.get.call(null,map__31758__$1,new cljs.core.Keyword(null,"plates","plates",358109965));
+return cljs.core.cons.call(null,cljs.core.with_meta(new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [knowledge.core.plate,cljs.core.conj.call(null,path,id),type,plates], null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"key","key",-1516042587),id], null)),knowledge$core$child_plates_$_iter__31747.call(null,cljs.core.rest.call(null,s__31748__$2)));
 }
 } else {
 return null;

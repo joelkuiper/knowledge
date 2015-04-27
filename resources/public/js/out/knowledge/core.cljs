@@ -23,8 +23,9 @@
 
 (defn socket-button
   [path]
-  [:a.btn-flat.waves-effect.waves
-   {:on-click #(fill-socket path nil)}
+  [:a.btn-flat.waves-effect.waves-teal
+   {:style {:color "#343434"}
+    :on-click #(fill-socket path nil)}
    [:i.mdi-content-add]])
 
 (defn depth->class
