@@ -12,14 +12,19 @@
 
 (def app-state (atom {}))
 
+(defn new-plate
+  [type]
+  {:plates {}
+   :type type
+   :title "Foobar"
+   :accepts []
+   :provides []})
+
 (defn fill-socket
   [path type]
   (let [new-id (uuid/make-random-squuid)
-        new-path (conj path new-id)]
-    (println new-path)
-    (swap! app-state assoc-in
-           new-path
-           {})))
+        new-path (into path [:plates new-id])]
+    (swap! app-state assoc-in new-path (new-plate type))))
 
 (defn socket-button
   [path]
@@ -30,39 +35,34 @@
 
 (defn depth->class
   [depth]
-  (when-not (= depth 0)
-    (str "grey.lighten-" (- 6 depth))))
+  (when (> depth 2)
+    (str "grey.lighten-" (- 7 (/ depth 2)))))
 
 (declare plate)
 (defn child-plates
   [path]
-  (for [[id {:keys [plates type]}] (get-in @app-state path)]
-    ^{:key id} [plate (conj path id) type plates]))
+  (println "child-plates" path)
+  (for [[id state] (get-in @app-state path)]
+    ^{:key id} [plate (conj path id) state]))
 
 (defn plate
-  [path type plates]
-  (println path)
+  [path state]
   [:div.row
    [:div.col.s12
     [(str "div.gray.card." (depth->class (count path)))
-     [:div.card-content (child-plates path)]
+     [:div.card-content
+      [:h6 (:title state)]
+      (child-plates (conj path :plates))]
      [:div.card-action.right-align [socket-button path]]]]])
 
-(defn app
-  []
+(defn app []
   [:div.row
    [:div.col.s12
     [:h4 "Welcome to knowledge"]
-    (child-plates [])
-    ]
+    (child-plates [:plates])]
    [socket-button []]])
 
-(defn debug []
-  [:pre (str @app-state)])
-
 (defn mount-components []
-  (when js/development
-    (reagent/render-component [debug] (.getElementById js/document "debug")))
   (reagent/render-component [app] (.getElementById js/document "app")))
 
 (defn init! []

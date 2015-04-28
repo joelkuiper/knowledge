@@ -1,1 +1,7 @@
 @import "materialize.scss";
+
+.card {
+  &:hover {
+    @extend .z-depth-2;
+  }
+}
