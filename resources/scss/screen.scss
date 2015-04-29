@@ -13,7 +13,7 @@ body {
 }
 
 .animated {
-  animation-duration: .20s;
+  animation-duration: .10s;
   animation-fill-mode: both;
 }
 
@@ -74,7 +74,7 @@ i.socket {
 
   color: color("grey", "lighten-1");
 
-  @include transition(opacity .15s ease);
+  @include transition(opacity .10s ease);
   @extend .mdi-action-label-outline;
   &:hover, &.active {
     opacity: 1 !important;
@@ -89,7 +89,7 @@ i.socket {
   z-index: 100;
   @extend .z-depth-3;
   background-color: white;
-  width: 22em;
+  width: 18em;
   height: 320px;
 
   ul {

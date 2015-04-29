@@ -6865,7 +6865,7 @@ body {
   margin-top: 1em; }
 
 .animated {
-  animation-duration: .2s;
+  animation-duration: .1s;
   animation-fill-mode: both; }
 
 @keyframes zoom-in {
@@ -6912,11 +6912,11 @@ i.socket {
   text-transform: none;
   text-rendering: auto;
   color: #bdbdbd;
-  -webkit-transition: opacity .15s ease;
-  -moz-transition: opacity .15s ease;
-  -ms-transition: opacity .15s ease;
-  -o-transition: opacity .15s ease;
-  transition: opacity .15s ease; }
+  -webkit-transition: opacity .1s ease;
+  -moz-transition: opacity .1s ease;
+  -ms-transition: opacity .1s ease;
+  -o-transition: opacity .1s ease;
+  transition: opacity .1s ease; }
   i.socket:hover, i.socket.active {
     opacity: 1 !important;
     color: #212121; }
@@ -6925,7 +6925,7 @@ i.socket {
   position: absolute;
   z-index: 100;
   background-color: white;
-  width: 22em;
+  width: 18em;
   height: 320px; }
   .socket-popup ul {
     margin-top: 0; }
