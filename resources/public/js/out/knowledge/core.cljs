@@ -1,43 +1,52 @@
 (ns knowledge.core
   (:require
-   [clojure.zip :as z]
+   [knowledge.popup :as popup]
+   [knowledge.plates :as plates]
    [reagent.core :as reagent :refer [atom]]
    [secretary.core :as secretary]
    [reagent.session :as session]
    [reagent-forms.core :refer [bind-fields]]
+   [goog.dom :as dom]
+   [goog.events :as events]
    [cljs-uuid-utils.core :as uuid]
    [ajax.core :refer [GET POST]]))
 
 (enable-console-print!)
 
-(defn new-plate
-  [type title]
-  {:plates {}
-   :type type
-   :title (or title "Untitled")
-   :state {}})
+(def default-type :text)
 
 (def default-state
-  {:plates
+  {:socket-popup {:visible false}
+   :plates
    {(uuid/make-random-squuid)
-    (new-plate nil "Welcome to knowledge")}})
-
-(def default-type "foobar")
+    (plates/new-plate nil "Welcome to knowledge")}})
 
 (def app-state (atom default-state))
 
-(defn add-plate
-  [path type]
-  (let [new-id (uuid/make-random-squuid)
-        new-path (into path [:plates new-id])]
-    (swap! app-state assoc-in new-path (new-plate type nil))))
+(defn popup-visible? []
+  (get-in @app-state [:socket-popup :visible]))
 
-(defn socket-button
+(defn active-socket?
   [path]
-  [:a.btn-flat.waves-effect.waves-teal
-   {:style {:color "#343434"}
-    :on-click #(add-plate path default-type)}
-   [:i.mdi-content-add]])
+  (let [socket-popup (:socket-popup @app-state)
+        visible? (:visible socket-popup)
+        popup-path (:path socket-popup)]
+    (and (= path popup-path) visible?)))
+
+(defn socket
+  [path]
+  (fn [path]
+    [(str "i.socket" (when (active-socket? path) ".active"))
+     {:on-click
+      (fn [e]
+        (let [element (.-target e)
+              client-rect (.getBoundingClientRect element)
+              offset {:top (.-top client-rect)
+                      :left (.-left client-rect)}
+              new-popup {:path path
+                         :visible (not (popup-visible?))
+                         :offset offset}]
+          (swap! app-state assoc :socket-popup new-popup)))}]))
 
 (defn depth->class
   [depth]
@@ -52,18 +61,18 @@
 
 (def title-edit
   (with-meta
-    (fn [title edit-title! show-edit-title!]
-      (let [stop (fn [] (edit-title! title) (show-edit-title!))
+    (fn [title edit-title! hide-edit-title!]
+      (let [stop (fn [] (edit-title! title) (hide-edit-title!))
             save! #(edit-title! (-> % .-target .-value))]
         (fn [title edit-title! show-edit-title!]
           [:input.title-edit
            {:type "text"
             :value title
             :on-key-down #(case (.-which %)
-                            13 (do (save! %) (show-edit-title!))
+                            13 (do (save! %) (hide-edit-title!))
                             27 (stop)
                             nil)
-            :on-blur #(do (save! %) (show-edit-title!))
+            :on-blur #(do (save! %) (hide-edit-title!))
             :on-change save!}])))
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
@@ -73,15 +82,16 @@
         edit-title! (fn [value]
                       (swap! app-state assoc-in (into path [:title]) value))
         show-edit-title? (atom false)
-        show-edit-title! (fn []  (swap! show-edit-title? not) nil)
+        toggle-edit-title! (fn [] (swap! show-edit-title? not) nil)
+        hide-edit-title! (fn [] (reset! show-edit-title? false) nil)
         delete! (fn [] (swap! app-state update-in (pop path) dissoc (last path)))]
     (fn [title path collapsed?]
       [:h6
        [(str "i.mdi-editor-mode-edit.edit-title"
              (when @show-edit-title? ".teal-text"))
-        {:on-click show-edit-title!}]
+        {:on-click toggle-edit-title!}]
        (if @show-edit-title?
-         [title-edit title edit-title! show-edit-title!]
+         [title-edit title edit-title! hide-edit-title!]
          [:span title])
        [:div {:style {:float "right"}}
         [:i.mdi-navigation-close.delete
@@ -103,19 +113,28 @@
          [plate-header (:title state) path collapsed?]
          [(keyword (str "div.card-content" (when @collapsed? ".collapsed")))
           (child-plates (conj path :plates))
-          [:br]
-          [socket-button path]]]]])))
+          [socket path]]]]])))
 
 (defn app []
-  [:div.row
-   [:div.col.s12
-    (child-plates [:plates])]
-   [socket-button []]])
+  (fn []
+    [(str "div.app.row" (when (popup-visible?) ".popup-visible"))
+     [:div.col.s12
+      [popup/popup app-state]
+      (child-plates [:plates])]
+     [socket []]]))
 
 (defn mount-components []
   (reagent/render-component [app] (.getElementById js/document "app")))
 
+(defn listen-for-window-click
+  []
+  (events/listen
+   (dom/getWindow)
+   (.-MOUSEDOWN events/EventType)
+   #(swap! app-state assoc-in [:socket-popup :visible] false)))
+
 (defn init! []
   (secretary/set-config! :prefix "#")
   (session/put! :page :home)
+  (listen-for-window-click)
   (mount-components))

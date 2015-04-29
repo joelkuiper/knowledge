@@ -22,7 +22,8 @@
                  [org.clojure/clojurescript "0.0-3196" :scope "provided"]
                  [org.clojure/tools.reader "0.9.1"]
 
-                 [reagent "0.5.0"]
+                 [reagent "0.5.0" :exclusions [cljsjs/react]]
+                 [cljsjs/react-with-addons "0.13.1-0"]
                  [reagent-forms "0.5.0"]
                  [reagent-utils "0.1.4"]
                  [com.lucasbradstreet/cljs-uuid-utils "1.0.1"]

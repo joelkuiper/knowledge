@@ -1,10 +1,146 @@
 @import "materialize.scss";
 
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+body {
+  margin-top: 1em;
+}
+
+.animated {
+  animation-duration: .20s;
+  animation-fill-mode: both;
+}
+
+@keyframes zoom-in {
+  0% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.zoom-enter {
+  animation-name: zoom-in;
+}
+
+@keyframes zoom-out {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.zoom-leave {
+  animation-name: zoom-out;
+}
+
+.zoom-leave-active {
+  opacity: 0.0;
+}
+
+.zoom-enter-active {
+  opacity: 1.0;
+}
+
+i.socket {
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-family: "#{$font-mdi}";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+
+  color: color("grey", "lighten-1");
+
+  @include transition(opacity .20s ease);
+  @extend .mdi-action-label-outline;
+  &:hover, &.active {
+    opacity: 1 !important;
+    color: color("grey", "darken-4");
+    @extend .mdi-action-label;
+  }
+}
+
+
+.socket-popup {
+  position: absolute;
+  z-index: 100;
+  @extend .z-depth-3;
+  background-color: white;
+  width: 22em;
+  height: 320px;
+
+  ul {
+    margin-top: 0;
+  }
+
+  ul > li.group {
+    text-align: center;
+    background-color: color("grey", "lighten-4");
+    color: color("grey", "darken-2");
+    font-size: 0.8rem;
+    font-weight: bold;
+    font-variant: small-caps;
+    line-height: 2rem;
+
+    div.types {
+      background-color: white;
+      text-align: left;
+      padding: $card-padding;
+    }
+
+    div.type {
+      margin-right: 1em;
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      i {
+        font-size: 3em;
+      }
+    }
+  }
+}
+
 .card {
   border: 1px solid rgba(0,0,0,0);
+  @include transition(border .1s ease);
   &:hover {
     border: 1px solid color("grey", "lighten-1");
+    .socket {
+      opacity: 1;
+    }
   }
+
+  .row {
+    margin-bottom: 0rem;
+  }
+
+  .socket {
+    opacity: 0;
+  }
+
   &.plate {
     h6 {
       margin: 0;
@@ -12,7 +148,7 @@
       line-height: $collapsible-height;
       padding: 0 1rem;
       .title-edit {
-        width: 90%;
+        width: 80%;
       }
       .delete {
         &:hover {
@@ -44,5 +180,12 @@
     .collapsed {
       display: none;
     }
+  }
+}
+
+.app.popup-visible {
+  i.socket {
+    opacity: 0;
+    cursor: default;
   }
 }

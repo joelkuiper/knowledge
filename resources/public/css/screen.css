@@ -2008,7 +2008,7 @@ ul {
   -moz-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
 
-.z-depth-3 {
+.z-depth-3, .socket-popup {
   -webkit-box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
   -moz-box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); }
@@ -2731,10 +2731,10 @@ span.badge {
 .mdi-action-invert-colors:before {
   content: "\e63b"; }
 
-.mdi-action-label:before {
+.mdi-action-label:before, i.socket:hover:before, i.socket.active:before {
   content: "\e63c"; }
 
-.mdi-action-label-outline:before {
+.mdi-action-label-outline:before, i.socket:before {
   content: "\e63d"; }
 
 .mdi-action-language:before {
@@ -6861,17 +6861,116 @@ select {
       .slider .indicators .indicator-item.active {
         background-color: #4CAF50; }
 
+body {
+  margin-top: 1em; }
+
+.animated {
+  animation-duration: .2s;
+  animation-fill-mode: both; }
+
+@keyframes zoom-in {
+  0% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3); }
+
+  50% {
+    opacity: 1; } }
+
+.zoom-enter {
+  animation-name: zoom-in; }
+
+@keyframes zoom-out {
+  0% {
+    opacity: 1; }
+
+  50% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3); }
+
+  100% {
+    opacity: 0; } }
+
+.zoom-leave {
+  animation-name: zoom-out; }
+
+.zoom-leave-active {
+  opacity: 0.0; }
+
+.zoom-enter-active {
+  opacity: 1.0; }
+
+i.socket {
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-family: "Material-Design-Icons";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  color: #bdbdbd;
+  -webkit-transition: opacity .25s ease;
+  -moz-transition: opacity .25s ease;
+  -ms-transition: opacity .25s ease;
+  -o-transition: opacity .25s ease;
+  transition: opacity .25s ease; }
+  i.socket:hover, i.socket.active {
+    opacity: 1 !important;
+    color: #212121; }
+
+.socket-popup {
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+  width: 22em;
+  height: 320px; }
+  .socket-popup ul {
+    margin-top: 0; }
+  .socket-popup ul > li.group {
+    text-align: center;
+    background-color: #f5f5f5;
+    color: #616161;
+    font-size: 0.8rem;
+    font-weight: bold;
+    font-variant: small-caps;
+    line-height: 2rem; }
+    .socket-popup ul > li.group div.types {
+      background-color: white;
+      text-align: left;
+      padding: 20px; }
+    .socket-popup ul > li.group div.type {
+      margin-right: 1em;
+      display: inline-block;
+      text-align: center;
+      cursor: pointer; }
+      .socket-popup ul > li.group div.type i {
+        font-size: 3em; }
+
 .card {
-  border: 1px solid transparent; }
+  border: 1px solid transparent;
+  -webkit-transition: border .1s ease;
+  -moz-transition: border .1s ease;
+  -ms-transition: border .1s ease;
+  -o-transition: border .1s ease;
+  transition: border .1s ease; }
   .card:hover {
     border: 1px solid #bdbdbd; }
+    .card:hover .socket {
+      opacity: 1; }
+  .card .row {
+    margin-bottom: 0rem; }
+  .card .socket {
+    opacity: 0; }
   .card.plate h6 {
     margin: 0;
     height: 3rem;
     line-height: 3rem;
     padding: 0 1rem; }
     .card.plate h6 .title-edit {
-      width: 90%; }
+      width: 80%; }
     .card.plate h6 .delete:hover {
       color: #D50000 !important; }
     .card.plate h6 i {
@@ -6891,3 +6990,7 @@ select {
     border-top: 1px solid #ddd; }
   .card.plate .collapsed {
     display: none; }
+
+.app.popup-visible i.socket {
+  opacity: 0;
+  cursor: default; }
