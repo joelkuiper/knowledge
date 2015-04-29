@@ -116,8 +116,8 @@
         [(keyword class-name)
          [plate-header (:title state) path collapsed?]
          [(keyword (str "div.card-content" (when @collapsed? ".collapsed")))
-          [(:fn state) app-state path state]
           (child-plates (conj path :plates))
+          [(:fn state) app-state path state]
           [socket path]]]]])))
 
 (defn app []

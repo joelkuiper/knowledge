@@ -6966,34 +6966,33 @@ i.socket {
     margin-bottom: 0rem; }
   .card .socket {
     opacity: 0; }
-  .card.plate {
-    margin-top: 1em; }
-    .card.plate h6 {
-      margin: 0;
-      height: 3rem;
+  .card.plate h6 {
+    margin: 0;
+    height: 3rem;
+    line-height: 3rem;
+    padding: 0 1rem; }
+    .card.plate h6 .title-edit {
+      width: 80%; }
+    .card.plate h6 .delete:hover {
+      color: #B71C1C !important; }
+    .card.plate h6 i {
+      width: 1.25rem;
+      cursor: pointer;
       line-height: 3rem;
-      padding: 0 1rem; }
-      .card.plate h6 .title-edit {
-        width: 80%; }
-      .card.plate h6 .delete:hover {
-        color: #D50000 !important; }
-      .card.plate h6 i {
-        width: 1.25rem;
-        cursor: pointer;
-        line-height: 3rem;
-        margin-top: -1px;
-        display: block;
-        float: left;
-        text-align: center;
-        color: #bdbdbd; }
-        .card.plate h6 i:hover {
-          color: #424242; }
-        .card.plate h6 i:first-of-type {
-          margin-right: 0.75rem; }
-    .card.plate .card-content {
-      border-top: 1px solid #ddd; }
-    .card.plate .collapsed {
-      display: none; }
+      margin-top: -1px;
+      display: block;
+      float: left;
+      text-align: center;
+      color: #bdbdbd; }
+      .card.plate h6 i:hover {
+        color: #424242; }
+      .card.plate h6 i:first-of-type {
+        margin-right: 0.75rem; }
+  .card.plate .card-content {
+    padding-bottom: 10px;
+    border-top: 1px solid #bdbdbd; }
+  .card.plate .collapsed {
+    display: none; }
 
 .app.popup-visible i.socket {
   opacity: 0;
