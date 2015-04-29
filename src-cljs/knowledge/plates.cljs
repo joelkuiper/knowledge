@@ -6,7 +6,7 @@
 
 (defn untitled
   [type]
-  (str "Untitled " (get (swap! untitled-counter update type inc) type)))
+  (str "Untitled " (name type) " " (get (swap! untitled-counter update type inc) type)))
 
 (defn new-plate
   [type title]

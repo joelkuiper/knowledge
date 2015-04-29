@@ -33,6 +33,14 @@
         popup-path (:path socket-popup)]
     (and (= path popup-path) visible?)))
 
+(defn calc-offset
+  [rect]
+  (let [container-x (.-pageXOffset js/window)
+        container-y (.-pageYOffset js/window)]
+    (println container-x scroll-y)
+    {:top  (+ (.-top rect) container-y)
+     :left (+ (.-left rect) container-x)}))
+
 (defn socket
   [path]
   (fn [path]
@@ -41,8 +49,7 @@
       (fn [e]
         (let [element (.-target e)
               client-rect (.getBoundingClientRect element)
-              offset {:top (.-top client-rect)
-                      :left (.-left client-rect)}
+              offset (calc-offset client-rect)
               new-popup {:path path
                          :visible (not (popup-visible?))
                          :offset offset}]
