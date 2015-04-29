@@ -10,55 +10,102 @@
 
 (enable-console-print!)
 
-(def app-state (atom {}))
-
 (defn new-plate
-  [type]
+  [type title]
   {:plates {}
    :type type
-   :title "Foobar"
-   :accepts []
-   :provides []})
+   :title (or title type)
+   :state {}})
 
-(defn fill-socket
+(def default-state
+  {:plates
+   {(uuid/make-random-squuid)
+    (new-plate nil "Welcome to knowledge")}})
+
+(def default-type "foobar")
+
+(def app-state (atom default-state))
+
+(defn add-plate
   [path type]
   (let [new-id (uuid/make-random-squuid)
         new-path (into path [:plates new-id])]
-    (swap! app-state assoc-in new-path (new-plate type))))
+    (swap! app-state assoc-in new-path (new-plate type nil))))
 
 (defn socket-button
   [path]
   [:a.btn-flat.waves-effect.waves-teal
    {:style {:color "#343434"}
-    :on-click #(fill-socket path nil)}
+    :on-click #(add-plate path default-type)}
    [:i.mdi-content-add]])
 
 (defn depth->class
   [depth]
   (when (> depth 2)
-    (str "grey.lighten-" (- 7 (/ depth 2)))))
+    (str "grey.lighten-" (max 2 (- 7 (/ depth 2))))))
 
 (declare plate)
 (defn child-plates
   [path]
-  (println "child-plates" path)
   (for [[id state] (get-in @app-state path)]
     ^{:key id} [plate (conj path id) state]))
 
+(def title-edit
+  (with-meta
+    (fn [title edit-title! show-edit-title!]
+      (let [stop (fn [] (edit-title! title) (show-edit-title!))
+            save! #(edit-title! (-> % .-target .-value))]
+        (fn [title edit-title! show-edit-title!]
+          [:input.title-edit
+           {:type "text"
+            :value title
+            :on-key-down #(case (.-which %)
+                            13 (do (save! %) (show-edit-title!))
+                            27 (stop)
+                            nil)
+            :on-blur #(do (save! %) (show-edit-title!))
+            :on-change save!}])))
+    {:component-did-mount #(.focus (reagent/dom-node %))}))
+
+(defn plate-header
+  [title path collapsed?]
+  (let [collapse! (fn [] (swap! collapsed? not) nil)
+        edit-title! (fn [value]
+                      (swap! app-state assoc-in (into path [:title]) value))
+        show-edit-title? (atom false)
+        show-edit-title! (fn [] (swap! show-edit-title? not) nil)]
+    (fn [title path collapsed?]
+      [:h6
+       [(str "i.mdi-editor-mode-edit.edit-title"
+             (when @show-edit-title? ".teal-text"))
+        {:on-click show-edit-title!}]
+       (if @show-edit-title?
+         [title-edit title edit-title! show-edit-title!]
+         [:span title])
+       [(if @collapsed?
+          :i.mdi-navigation-expand-more
+          :i.mdi-navigation-expand-less)
+        {:on-click collapse!
+         :style {:float "right"}}]])))
+
 (defn plate
   [path state]
-  [:div.row
-   [:div.col.s12
-    [(str "div.gray.card." (depth->class (count path)))
-     [:div.card-content
-      [:h6 (:title state)]
-      (child-plates (conj path :plates))]
-     [:div.card-action.right-align [socket-button path]]]]])
+  (let [collapsed? (atom false)
+        class-name (str "div.gray.card.plate."
+                        (depth->class (count path)))]
+    (fn [path state]
+      [:div.row
+       [:div.col.s12
+        [(keyword class-name)
+         [plate-header (:title state) path collapsed?]
+         [(keyword (str "div.card-content" (when @collapsed? ".collapsed")))
+          (child-plates (conj path :plates))
+          [:br]
+          [socket-button path]]]]])))
 
 (defn app []
   [:div.row
    [:div.col.s12
-    [:h4 "Welcome to knowledge"]
     (child-plates [:plates])]
    [socket-button []]])
 

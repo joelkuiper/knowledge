@@ -1,7 +1,42 @@
 @import "materialize.scss";
 
 .card {
+  border: 1px solid rgba(0,0,0,0);
   &:hover {
-    @extend .z-depth-2;
+    border: 1px solid color("grey", "lighten-1");
+  }
+  &.plate {
+    h6 {
+      margin: 0;
+      height: $collapsible-height;
+      line-height: $collapsible-height;
+      padding: 0 1rem;
+      .title-edit {
+        width: 90%;
+      }
+      i {
+        width: 1.25rem;
+        cursor: pointer;
+        line-height: $collapsible-height;
+        margin-top: -1px;
+        display: block;
+        float: left;
+        text-align: center;
+        color: color("grey", "lighten-1");
+        &:hover {
+          color: color("grey", "darken-3");
+        }
+        &:first-of-type {
+          margin-right: 0.75rem;
+        }
+      }
+
+    }
+    .card-content {
+      border-top: 1px solid $collapsible-border-color;
+    }
+    .collapsed {
+      display: none;
+    }
   }
 }
