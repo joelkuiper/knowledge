@@ -74,7 +74,7 @@ i.socket {
 
   color: color("grey", "lighten-1");
 
-  @include transition(opacity .20s ease);
+  @include transition(opacity .15s ease);
   @extend .mdi-action-label-outline;
   &:hover, &.active {
     opacity: 1 !important;
@@ -99,7 +99,7 @@ i.socket {
   ul > li.group {
     text-align: center;
     background-color: color("grey", "lighten-4");
-    color: color("grey", "darken-2");
+    color: color("grey", "darken-1");
     font-size: 0.8rem;
     font-weight: bold;
     font-variant: small-caps;
@@ -116,6 +116,10 @@ i.socket {
       display: inline-block;
       text-align: center;
       cursor: pointer;
+      &:hover {
+        color: black !important;
+      }
+
       i {
         font-size: 3em;
       }
@@ -142,6 +146,8 @@ i.socket {
   }
 
   &.plate {
+
+    margin-top: 1em;
     h6 {
       margin: 0;
       height: $collapsible-height;

@@ -6,10 +6,9 @@
 (def css-transition-group
   (reagent/adapt-react-class js/React.addons.CSSTransitionGroup))
 
-(defn add-to-plate
+(defn- add-to-plate
   [app-state path type]
   (plates/add-plate app-state path type)
-  (println type)
   (swap! app-state assoc-in [:socket-popup :visible] false))
 
 (defn- types

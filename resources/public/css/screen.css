@@ -6912,11 +6912,11 @@ i.socket {
   text-transform: none;
   text-rendering: auto;
   color: #bdbdbd;
-  -webkit-transition: opacity .25s ease;
-  -moz-transition: opacity .25s ease;
-  -ms-transition: opacity .25s ease;
-  -o-transition: opacity .25s ease;
-  transition: opacity .25s ease; }
+  -webkit-transition: opacity .15s ease;
+  -moz-transition: opacity .15s ease;
+  -ms-transition: opacity .15s ease;
+  -o-transition: opacity .15s ease;
+  transition: opacity .15s ease; }
   i.socket:hover, i.socket.active {
     opacity: 1 !important;
     color: #212121; }
@@ -6932,7 +6932,7 @@ i.socket {
   .socket-popup ul > li.group {
     text-align: center;
     background-color: #f5f5f5;
-    color: #616161;
+    color: #757575;
     font-size: 0.8rem;
     font-weight: bold;
     font-variant: small-caps;
@@ -6946,6 +6946,8 @@ i.socket {
       display: inline-block;
       text-align: center;
       cursor: pointer; }
+      .socket-popup ul > li.group div.type:hover {
+        color: black !important; }
       .socket-popup ul > li.group div.type i {
         font-size: 3em; }
 
@@ -6964,32 +6966,34 @@ i.socket {
     margin-bottom: 0rem; }
   .card .socket {
     opacity: 0; }
-  .card.plate h6 {
-    margin: 0;
-    height: 3rem;
-    line-height: 3rem;
-    padding: 0 1rem; }
-    .card.plate h6 .title-edit {
-      width: 80%; }
-    .card.plate h6 .delete:hover {
-      color: #D50000 !important; }
-    .card.plate h6 i {
-      width: 1.25rem;
-      cursor: pointer;
+  .card.plate {
+    margin-top: 1em; }
+    .card.plate h6 {
+      margin: 0;
+      height: 3rem;
       line-height: 3rem;
-      margin-top: -1px;
-      display: block;
-      float: left;
-      text-align: center;
-      color: #bdbdbd; }
-      .card.plate h6 i:hover {
-        color: #424242; }
-      .card.plate h6 i:first-of-type {
-        margin-right: 0.75rem; }
-  .card.plate .card-content {
-    border-top: 1px solid #ddd; }
-  .card.plate .collapsed {
-    display: none; }
+      padding: 0 1rem; }
+      .card.plate h6 .title-edit {
+        width: 80%; }
+      .card.plate h6 .delete:hover {
+        color: #D50000 !important; }
+      .card.plate h6 i {
+        width: 1.25rem;
+        cursor: pointer;
+        line-height: 3rem;
+        margin-top: -1px;
+        display: block;
+        float: left;
+        text-align: center;
+        color: #bdbdbd; }
+        .card.plate h6 i:hover {
+          color: #424242; }
+        .card.plate h6 i:first-of-type {
+          margin-right: 0.75rem; }
+    .card.plate .card-content {
+      border-top: 1px solid #ddd; }
+    .card.plate .collapsed {
+      display: none; }
 
 .app.popup-visible i.socket {
   opacity: 0;

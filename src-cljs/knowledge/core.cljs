@@ -11,15 +11,13 @@
    [cljs-uuid-utils.core :as uuid]
    [ajax.core :refer [GET POST]]))
 
-(enable-console-print!)
-
 (def default-type :text)
 
 (def default-state
   {:socket-popup {:visible false}
    :plates
    {(uuid/make-random-squuid)
-    (plates/new-plate nil "Welcome to knowledge")}})
+    (plates/new-plate default-type "Welcome to knowledge")}})
 
 (def app-state (atom default-state))
 
@@ -37,7 +35,6 @@
   [rect]
   (let [container-x (.-pageXOffset js/window)
         container-y (.-pageYOffset js/window)]
-    (println container-x scroll-y)
     {:top  (+ (.-top rect) container-y)
      :left (+ (.-left rect) container-x)}))
 
@@ -119,6 +116,7 @@
         [(keyword class-name)
          [plate-header (:title state) path collapsed?]
          [(keyword (str "div.card-content" (when @collapsed? ".collapsed")))
+          [(:fn state) app-state path state]
           (child-plates (conj path :plates))
           [socket path]]]]])))
 
