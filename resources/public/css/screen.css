@@ -6872,6 +6872,8 @@ select {
     padding: 0 1rem; }
     .card.plate h6 .title-edit {
       width: 90%; }
+    .card.plate h6 .delete:hover {
+      color: #D50000 !important; }
     .card.plate h6 i {
       width: 1.25rem;
       cursor: pointer;

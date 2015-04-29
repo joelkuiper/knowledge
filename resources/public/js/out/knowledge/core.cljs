@@ -14,7 +14,7 @@
   [type title]
   {:plates {}
    :type type
-   :title (or title type)
+   :title (or title "Untitled")
    :state {}})
 
 (def default-state
@@ -73,7 +73,8 @@
         edit-title! (fn [value]
                       (swap! app-state assoc-in (into path [:title]) value))
         show-edit-title? (atom false)
-        show-edit-title! (fn [] (swap! show-edit-title? not) nil)]
+        show-edit-title! (fn []  (swap! show-edit-title? not) nil)
+        delete! (fn [] (swap! app-state update-in (pop path) dissoc (last path)))]
     (fn [title path collapsed?]
       [:h6
        [(str "i.mdi-editor-mode-edit.edit-title"
@@ -82,11 +83,13 @@
        (if @show-edit-title?
          [title-edit title edit-title! show-edit-title!]
          [:span title])
-       [(if @collapsed?
-          :i.mdi-navigation-expand-more
-          :i.mdi-navigation-expand-less)
-        {:on-click collapse!
-         :style {:float "right"}}]])))
+       [:div {:style {:float "right"}}
+        [:i.mdi-navigation-close.delete
+         {:on-click delete!}]
+        [(if @collapsed?
+           :i.mdi-navigation-expand-more
+           :i.mdi-navigation-expand-less)
+         {:on-click collapse!}]]])))
 
 (defn plate
   [path state]
