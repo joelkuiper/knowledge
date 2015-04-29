@@ -43,3 +43,5 @@ nbproject
 *.sublime-workspace
 
 !.gitkeep
+
+resources/public/js/out
