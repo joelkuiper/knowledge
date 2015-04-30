@@ -45,3 +45,5 @@ nbproject
 !.gitkeep
 
 resources/public/js/out
+resources/public/js/app.js
+resources/public/css/screen.css
