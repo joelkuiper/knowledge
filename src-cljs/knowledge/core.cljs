@@ -46,7 +46,7 @@
 (defn socket
   [path]
   (fn [path]
-    [(str "i.socket" (when (active-socket? path) ".active"))
+    [(str "i.socket.waves-effect.waves-light" (when (active-socket? path) ".active"))
      {:on-click
       (fn [e]
         (let [element (.-target e)
@@ -136,8 +136,7 @@
 (defn mount-components []
   (reagent/render-component [app] (.getElementById js/document "app")))
 
-(defn listen-for-window-click
-  []
+(defn listen-for-window-click []
   (events/listen
    (dom/getWindow)
    (.-MOUSEDOWN events/EventType)

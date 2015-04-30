@@ -10,8 +10,7 @@
   (str "Untitled " (name type) " " (get (swap! untitled-counter update type inc) type)))
 
 (def all-types
-  [markdown/plate
-   ])
+  [markdown/plate])
 
 (defn find-type
   [type]

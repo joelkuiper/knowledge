@@ -16,7 +16,6 @@
       [:textarea.materialize-textarea
        {:id id
         :style {:padding "0px"
-                :width "95%"
                 :height "8em"
                 :font-size "13.5px"
                 :overflow-y "auto"}
@@ -32,8 +31,10 @@
 (defn plate-fn
   [app-state path state]
   (let [form (atom {})
-        save! #(swap! app-state assoc-in (into path [:state :text]) %)
-        toggle-edit! (fn [] (swap! app-state update-in (into path [:state :show-edit?]) toggle) nil)]
+        save! #(swap! app-state assoc-in
+                      (into path [:state :text]) %)
+        toggle-edit! (fn [] (swap! app-state update-in
+                                  (into path [:state :show-edit?]) toggle) nil)]
     (fn [app-state path state]
       (let [text (get-in @app-state (into path [:state :text]))
             show-edit? (get-in @app-state (into path [:state :show-edit?]) true)
