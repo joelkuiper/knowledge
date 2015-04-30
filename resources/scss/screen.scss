@@ -84,6 +84,12 @@ i.socket {
   }
 }
 
+.truncate-80 {
+    @extend .truncate;
+    display: inline-block;
+    width: 80%;
+}
+
 .socket-popup {
   position: absolute;
   z-index: 100;

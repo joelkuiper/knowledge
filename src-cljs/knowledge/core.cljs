@@ -102,7 +102,7 @@
         {:on-click toggle-edit-title! :style {:float "left"}}]
        (if @show-edit-title?
          [title-edit title edit-title! hide-edit-title!]
-         [:span title])
+         [:span.truncate-80 title])
        [:div {:style {:float "right"}}
         [:i.mdi-navigation-close.delete
          {:on-click delete! :style {:float "left"}}]
