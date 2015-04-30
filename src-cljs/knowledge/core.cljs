@@ -11,13 +11,18 @@
    [cljs-uuid-utils.core :as uuid]
    [ajax.core :refer [GET POST]]))
 
-(def default-type :text)
+  (def intro "#####Hey!
+  Knowledge is an interactive document builder, it works by *nesting* plates, like this one.
+  These plates can be as complex, or simple, as you'd like. You can make an interactive document in no time!
+  <br><br>
+  You can now *add*, *remove*, or **edit** the plates!")
 
 (def default-state
   {:socket-popup {:visible false}
    :plates
    {(uuid/make-random-squuid)
-    (plates/new-plate default-type "Welcome to knowledge")}})
+    (assoc (plates/new-plate :text "Welcome to knowledge")
+           :state {:text intro :show-edit? false})}})
 
 (def app-state (atom default-state))
 
@@ -93,17 +98,17 @@
       [:h6
        [(str "i.mdi-editor-mode-edit.edit-title"
              (when @show-edit-title? ".teal-text"))
-        {:on-click toggle-edit-title!}]
+        {:on-click toggle-edit-title! :style {:float "left"}}]
        (if @show-edit-title?
          [title-edit title edit-title! hide-edit-title!]
          [:span title])
        [:div {:style {:float "right"}}
         [:i.mdi-navigation-close.delete
-         {:on-click delete!}]
+         {:on-click delete! :style {:float "left"}}]
         [(if @collapsed?
            :i.mdi-navigation-expand-more
            :i.mdi-navigation-expand-less)
-         {:on-click collapse!}]]])))
+         {:on-click collapse! :style {:float "left"}}]]])))
 
 (defn plate
   [path state]
@@ -116,8 +121,8 @@
         [(keyword class-name)
          [plate-header (:title state) path collapsed?]
          [(keyword (str "div.card-content" (when @collapsed? ".collapsed")))
+          [:div.content [(:fn state) app-state path (:state state)]]
           (child-plates (conj path :plates))
-          [(:fn state) app-state path state]
           [socket path]]]]])))
 
 (defn app []

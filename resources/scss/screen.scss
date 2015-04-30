@@ -8,6 +8,11 @@
   transition: $args;
 }
 
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
 body {
   margin-top: 1em;
 }
@@ -60,6 +65,7 @@ body {
 }
 
 i.socket {
+  display: inline-block;
   cursor: pointer;
   font-size: 1.25rem;
   font-family: "#{$font-mdi}";
@@ -127,6 +133,21 @@ i.socket {
 }
 
 .card {
+  i {
+    width: 1.25rem;
+    cursor: pointer;
+    line-height: $collapsible-height;
+    margin-top: -1px;
+    display: block;
+    color: color("grey", "lighten-1");
+    &:hover {
+      color: color("grey", "darken-3");
+    }
+  }
+
+
+
+  margin: 0  0 2rem 0!important;
   border: 1px solid rgba(0,0,0,0);
   @include transition(border .1s ease);
   &:hover {
@@ -135,7 +156,6 @@ i.socket {
       opacity: 1;
     }
   }
-
   .row {
     margin-bottom: 0rem;
   }
@@ -158,29 +178,26 @@ i.socket {
           color: color("red", "darken-4") !important;
         }
       }
-
       i {
-        width: 1.25rem;
-        cursor: pointer;
-        line-height: $collapsible-height;
-        margin-top: -1px;
-        display: block;
-        float: left;
-        text-align: center;
-        color: color("grey", "lighten-1");
-        &:hover {
-          color: color("grey", "darken-3");
-        }
         &:first-of-type {
           margin-right: 0.75rem;
         }
       }
 
     }
+
     .card-content {
       padding-bottom: 10px;
       border-top: 1px solid color("grey", "lighten-1");
+      font-weight: 400;
+      font-size: 13.5px;
+      line-height: 20.25px;
+      color: rgba(0,0,0,0.71);
+      .content {
+        margin-bottom: 1.5em;
+      }
     }
+
     .collapsed {
       display: none;
     }

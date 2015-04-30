@@ -1,5 +1,6 @@
 (ns knowledge.plates
   (:require
+   [knowledge.plates.markdown :as markdown]
    [cljs-uuid-utils.core :as uuid]))
 
 (def untitled-counter (atom {}))
@@ -8,28 +9,12 @@
   [type]
   (str "Untitled " (name type) " " (get (swap! untitled-counter update type inc) type)))
 
-
-(defn markdown
-  [app-state]
-  (fn [app-state path state]
-    [:div "Neuken?!"]))
-
-(defn fuck
-  [app-state]
-  (fn [app-state path state]
-    [:div "Fuck you?!"]))
-
 (def all-types
   [{:title "text"
     :type :text
-    :fn markdown
+    :fn markdown/plate
     :group-title "standard"
     :icon "mdi-action-subject"}
-   {:title "fuck"
-    :type :fuck
-    :fn fuck
-    :group-title "standard"
-    :icon "mdi-action-store"}
    ])
 
 (defn find-type
@@ -50,5 +35,4 @@
   (let [new-id (uuid/make-random-squuid)
         new-path (into path [:plates new-id])]
     (swap! app-state assoc-in new-path
-           (new-plate type nil)
-           )))
+           (new-plate type nil))))
