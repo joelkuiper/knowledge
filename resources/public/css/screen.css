@@ -6966,7 +6966,6 @@ i.socket {
   .card i {
     width: 1.25rem;
     cursor: pointer;
-    line-height: 3rem;
     margin-top: -1px;
     display: block;
     color: #bdbdbd; }
