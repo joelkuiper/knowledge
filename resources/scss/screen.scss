@@ -8,17 +8,12 @@
   transition: $args;
 }
 
-html {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-
 body {
   margin-top: 1em;
 }
 
 .animated {
-  animation-duration: .10s;
+  animation-duration: .20s;
   animation-fill-mode: both;
 }
 
@@ -80,7 +75,7 @@ i.socket {
 
   color: color("grey", "lighten-1");
 
-  @include transition(opacity .10s ease);
+  @include transition(opacity .20s ease);
   @extend .mdi-action-label-outline;
   &:hover, &.active {
     opacity: 1 !important;
@@ -132,6 +127,10 @@ i.socket {
   }
 }
 
+.row {
+    margin-bottom: 0;
+}
+
 .card {
   i {
     width: 1.25rem;
@@ -144,9 +143,7 @@ i.socket {
     }
   }
 
-
-
-  margin: 0  0 2rem 0!important;
+  margin: 0px 0px 2rem 0px !important;
   border: 1px solid rgba(0,0,0,0);
   @include transition(border .1s ease);
   &:hover {

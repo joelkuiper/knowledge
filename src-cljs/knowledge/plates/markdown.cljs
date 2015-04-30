@@ -10,26 +10,39 @@
   ([comp props content]
    [comp (assoc props :dangerouslySetInnerHTML {:__html content})]))
 
+(def text-field
+  (with-meta
+    (fn [id form text]
+      [:textarea.materialize-textarea
+       {:id id
+        :style {:padding "0px"
+                :width "90%"
+                :height "8em"
+                :font-size "13.5px"
+                :overflow-y "auto"}
+        :on-change #(swap! form assoc :text (-> % .-target .-value))}
+       text])
+    {:component-did-mount #(.focus (reagent/dom-node %))}))
+
+(defn toggle
+  [bool]
+  ;; We treat nil as truthy
+  (if (nil? bool) false (not bool)))
+
 (defn plate
   [app-state path state]
   (let [form (atom {})
         save! #(swap! app-state assoc-in (into path [:state :text]) %)
-        toggle-edit! (fn [] (swap! app-state update-in (into path [:state :show-edit?]) not) nil)]
+        toggle-edit! (fn [] (swap! app-state update-in (into path [:state :show-edit?]) toggle) nil)]
     (fn [app-state path state]
       (let [text (get-in @app-state (into path [:state :text]))
-            show-edit? (get-in @app-state (into path [:state :show-edit?]))
+            show-edit? (get-in @app-state (into path [:state :show-edit?]) true)
             id (clojure.string/join path)]
         [:div.row
          [:div.col.s11
           (if show-edit?
             [:div
-             [:textarea.materialize-textarea
-              {:id id
-               :style {:width "90%"
-                       :height "8em"
-                       :overflow-y "auto"}
-               :on-change #(swap! form assoc :text (-> % .-target .-value))}
-              (:text state)]
+             [text-field id form text]
              [:a.btn.waves-effect.waves-light
               {:on-click #(do (save! (:text @form)) (toggle-edit!))} "Save"]
              [:span " "]

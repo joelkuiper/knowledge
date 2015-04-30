@@ -43,17 +43,7 @@
   :plugins [[lein-ring "0.9.1"]
             [lein-environ "1.0.0"]
             [lein-ancient "0.6.5"]
-            [lein-cljsbuild "1.0.4"]
-            [lein-sassc "0.10.4"]]
-
-
-
-  :sassc [{:src "resources/scss/screen.scss"
-           :style "nested"
-           :output-to "resources/public/css/screen.css"
-           :import-path "resources/scss"}]
-
-  :hooks [leiningen.sassc]
+            [lein-cljsbuild "1.0.4"]]
 
 
   :ring {:handler knowledge.handler/app

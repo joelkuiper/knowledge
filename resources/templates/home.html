@@ -17,11 +17,14 @@
 
     <script type="text/javascript">
         var context = "{{servlet-context}}";
-        var development = {{dev}};
+
+    {% if dev %}
+        var development = true;
+    {% endif %}
     </script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="js/dist/materialize-minimal.min.js"></script>
+    <script src="/scripts/materialize-minimal.min.js"></script>
     {% if dev %}
       {% script "/js/out/goog/base.js" %}
       {% script "/js/app.js" %}

@@ -11,11 +11,11 @@
    [cljs-uuid-utils.core :as uuid]
    [ajax.core :refer [GET POST]]))
 
-  (def intro "#####Hey!
-  Knowledge is an interactive document builder, it works by *nesting* plates, like this one.
-  These plates can be as complex, or simple, as you'd like. You can make an interactive document in no time!
-  <br><br>
-  You can now *add*, *remove*, or **edit** the plates!")
+(def intro
+  (clojure.string/join
+   ["Knowledge is an interactive document builder, it works by *nesting* plates, like this one."
+    "These plates can be as complex, or simple, as you'd like."
+    "You can make an interactive document in no time!"]))
 
 (def default-state
   {:socket-popup {:visible false}
