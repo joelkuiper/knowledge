@@ -1,6 +1,7 @@
 (ns knowledge.popup
   (:require
    [knowledge.plates :as plates]
+   [knowledge.util :as util]
    [reagent.core :as reagent :refer [atom]]))
 
 (def css-transition-group
@@ -8,14 +9,19 @@
 
 (defn- add-to-plate
   [app-state path type]
-  (plates/add-plate app-state path type)
-  (swap! app-state assoc-in [:socket-popup :visible] false))
+  (util/wait-a-bit
+   #(swap! app-state assoc-in [:socket-popup :visible] false)
+   #(plates/add-plate app-state path type)))
 
 (defn- filtered-plates
   [app-state path]
-  (let [accepts (get-in @app-state (into path [:accepts]))]
+  (let [accepts (get-in @app-state (into path [:accepts]))
+        filter-fn (if (nil? accepts)
+                    (fn [e] (some #{(:type e)} plates/default-types))
+                    (fn [e] (some #{(:type e)} accepts)))]
+    (println accepts)
     (group-by :group-title
-              (filter #(some #{(:type %)} accepts) plates/all-types))))
+              (filter filter-fn plates/all))))
 
 (defn- types
   [app-state path]

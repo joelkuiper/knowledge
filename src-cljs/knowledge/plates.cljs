@@ -11,13 +11,16 @@
   (str "Untitled " (name type) " "
        (get (swap! untitled-counter update type inc) type)))
 
-(def all-types
+(def default-types
+  [:text :study-list])
+
+(def all
   [markdown/plate
    study-list/plate])
 
 (defn find-type
   [type]
-  (first (filter #(= type (:type %)) all-types)))
+  (first (filter #(= type (:type %)) all)))
 
 (defn new-plate
   [type title]
