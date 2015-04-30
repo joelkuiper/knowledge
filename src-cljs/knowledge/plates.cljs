@@ -10,11 +10,7 @@
   (str "Untitled " (name type) " " (get (swap! untitled-counter update type inc) type)))
 
 (def all-types
-  [{:title "text"
-    :type :text
-    :fn markdown/plate
-    :group-title "standard"
-    :icon "mdi-action-subject"}
+  [markdown/plate
    ])
 
 (defn find-type
@@ -23,12 +19,12 @@
 
 (defn new-plate
   [type title]
-  (let [new-title (or title (untitled type))]
-    {:plates {}
-     :type type
-     :title new-title
-     :fn (:fn (find-type type))
-     :state {}}))
+  (let [new-title (or title (untitled type))
+        plate (find-type type)
+        base {:title new-title
+              :plates {}
+              :state {}}]
+    (merge base plate)))
 
 (defn add-plate
   [app-state path type]

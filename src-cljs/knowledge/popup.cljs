@@ -19,12 +19,12 @@
      [:li.group title
       [:div.types
        (for [plate group]
-         ^{:key (:title plate)}
+         ^{:key (:type plate)}
          [:div.type {:on-click
                      (fn [] (add-to-plate app-state path (:type plate)))}
           [(str "i." (:icon plate))]
           [:br]
-          [:span (:title plate)]])]])])
+          [:span (name (:type plate))]])]])])
 
 (defn popup
   [app-state]
@@ -34,13 +34,15 @@
       (let [visible? (get-in @app-state [:socket-popup :visible])
             offset (get-in @app-state [:socket-popup :offset])
             path (get-in @app-state [:socket-popup :path])
-            position {:position "absolute"
-                      :top (max 0 (- (:top offset) (/ 320 2)))
-                      :left (+ 25 (:left offset))}]
+            height 280
+            style {:position "absolute"
+                   :top (max 0 (- (:top offset) (/ height 2)))
+                   :left (+ 25 (:left offset))}]
         [:div {:id "popup"
-               :style position
+               :style style
                :on-mouse-down #(.stopPropagation %)}
          [css-transition-group {:transition-name "zoom"}
           (when visible?
             [:div.socket-popup.animated.zoom-in
+             {:style {:height height}}
              [types app-state path]])]]))}))

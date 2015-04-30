@@ -16,7 +16,7 @@
       [:textarea.materialize-textarea
        {:id id
         :style {:padding "0px"
-                :width "90%"
+                :width "95%"
                 :height "8em"
                 :font-size "13.5px"
                 :overflow-y "auto"}
@@ -29,7 +29,7 @@
   ;; We treat nil as truthy
   (if (nil? bool) false (not bool)))
 
-(defn plate
+(defn plate-fn
   [app-state path state]
   (let [form (atom {})
         save! #(swap! app-state assoc-in (into path [:state :text]) %)
@@ -53,3 +53,11 @@
           [(str "i.mdi-editor-mode-edit.edit-title"
                 (when show-edit? ".teal-text"))
            {:on-click toggle-edit! :style {:float "right"}}]]]))))
+
+(def plate
+  {:accepts []
+   :provides []
+   :type :text
+   :fn plate-fn
+   :group-title "standard"
+   :icon "mdi-action-subject"})

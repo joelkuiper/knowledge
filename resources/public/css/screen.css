@@ -6923,7 +6923,7 @@ select {
         background-color: #4CAF50; }
 
 body {
-  margin-top: 1em; }
+  margin-top: 2em; }
 
 .animated {
   animation-duration: .20s;
@@ -6982,8 +6982,7 @@ i.socket {
   position: absolute;
   z-index: 100;
   background-color: white;
-  width: 18em;
-  height: 320px; }
+  width: 18em; }
   .socket-popup ul {
     margin-top: 0; }
   .socket-popup ul > li.group {
