@@ -13,6 +13,7 @@
 
 (def intro
   (clojure.string/join
+   " \n"
    ["Knowledge is an interactive document builder, it works by *nesting* plates, like this one."
     "These plates can be as complex, or simple, as you'd like."
     "You can make an interactive document in no time!"]))

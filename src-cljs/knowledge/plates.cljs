@@ -1,16 +1,19 @@
 (ns knowledge.plates
   (:require
    [knowledge.plates.markdown :as markdown]
+   [knowledge.plates.study-list :as study-list]
    [cljs-uuid-utils.core :as uuid]))
 
 (def untitled-counter (atom {}))
 
 (defn untitled
   [type]
-  (str "Untitled " (name type) " " (get (swap! untitled-counter update type inc) type)))
+  (str "Untitled " (name type) " "
+       (get (swap! untitled-counter update type inc) type)))
 
 (def all-types
-  [markdown/plate])
+  [markdown/plate
+   study-list/plate])
 
 (defn find-type
   [type]

@@ -8,7 +8,7 @@
   transition: $args;
 }
 
-body {
+html {
   margin-top: 2em;
 }
 
@@ -84,7 +84,6 @@ i.socket {
   }
 }
 
-
 .socket-popup {
   position: absolute;
   z-index: 100;
@@ -108,11 +107,12 @@ i.socket {
     div.types {
       background-color: white;
       text-align: left;
-      padding: $card-padding;
+      padding: 1em;
     }
 
     div.type {
       margin-right: 1em;
+      width: 5em;
       display: inline-block;
       text-align: center;
       cursor: pointer;

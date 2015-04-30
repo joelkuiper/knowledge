@@ -3,8 +3,7 @@
    [reagent.core :as reagent :refer [atom]]
    [markdown.core :refer [md->html]]))
 
-
-(defn dangerous
+(defn- dangerous
   ([comp content]
    (dangerous comp nil content))
   ([comp props content]
@@ -23,12 +22,12 @@
        text])
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
-(defn toggle
+(defn- toggle
   [bool]
   ;; We treat nil as truthy
   (if (nil? bool) false (not bool)))
 
-(defn plate-fn
+(defn- plate-fn
   [app-state path state]
   (let [form (atom {})
         save! #(swap! app-state assoc-in
@@ -56,9 +55,10 @@
            {:on-click toggle-edit! :style {:float "right"}}]]]))))
 
 (def plate
-  {:accepts []
-   :provides []
+  {:accepts [:text :study-list]
+   :provides {}
+   :name "text"
    :type :text
    :fn plate-fn
    :group-title "standard"
-   :icon "mdi-action-subject"})
+   :icon "mdi-editor-format-size"})

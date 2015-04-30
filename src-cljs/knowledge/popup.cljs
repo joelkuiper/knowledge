@@ -11,10 +11,16 @@
   (plates/add-plate app-state path type)
   (swap! app-state assoc-in [:socket-popup :visible] false))
 
+(defn- filtered-plates
+  [app-state path]
+  (let [accepts (get-in @app-state (into path [:accepts]))]
+    (group-by :group-title
+              (filter #(some #{(:type %)} accepts) plates/all-types))))
+
 (defn- types
   [app-state path]
   [:ul
-   (for [[title group] (group-by :group-title plates/all-types)]
+   (for [[title group] (filtered-plates app-state path)]
      ^{:key title}
      [:li.group title
       [:div.types
@@ -24,7 +30,7 @@
                      (fn [] (add-to-plate app-state path (:type plate)))}
           [(str "i." (:icon plate))]
           [:br]
-          [:span (name (:type plate))]])]])])
+          [:span (:name plate)]])]])])
 
 (defn popup
   [app-state]

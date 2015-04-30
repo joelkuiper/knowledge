@@ -6922,7 +6922,7 @@ select {
       .slider .indicators .indicator-item.active {
         background-color: #4CAF50; }
 
-body {
+html {
   margin-top: 2em; }
 
 .animated {
@@ -6996,9 +6996,10 @@ i.socket {
     .socket-popup ul > li.group div.types {
       background-color: white;
       text-align: left;
-      padding: 20px; }
+      padding: 1em; }
     .socket-popup ul > li.group div.type {
       margin-right: 1em;
+      width: 5em;
       display: inline-block;
       text-align: center;
       cursor: pointer; }
