@@ -18,14 +18,14 @@
     "These plates can be as complex, or simple, as you'd like."
     "You can make an interactive document in no time!"]))
 
-(def default-state
+(defonce default-state
   {:socket-popup {:visible false}
    :plates
    {(uuid/make-random-squuid)
     (assoc (plates/new-plate :text "Welcome to knowledge")
            :state {:text intro :show-edit? false})}})
 
-(def app-state (atom default-state))
+(defonce app-state (atom default-state))
 
 (defn popup-visible? []
   (get-in @app-state [:socket-popup :visible]))
