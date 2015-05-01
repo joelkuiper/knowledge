@@ -9,7 +9,6 @@
     (js/setTimeout (fn [] (close! c)) ms)
     c))
 
-
 (defn dangerous
   ([comp content]
    (dangerous comp nil content))

@@ -51,7 +51,8 @@
 
 (defn socket
   [path]
-  [(str "i.socket.waves-effect.waves-light" (when (active-socket? path) ".active"))
+  [(str "i.socket.waves-effect.waves-light"
+        (when (active-socket? path) ".active"))
    {:on-click
     (fn [e]
       (let [element (.-target e)
@@ -68,11 +69,15 @@
   (when (> depth 2)
     (str "grey.lighten-" (max 2 (- 7 (/ depth 2))))))
 
+(def css-transition-group
+  (reagent/adapt-react-class js/React.addons.CSSTransitionGroup))
+
 (declare plate)
 (defn- child-plates
   [path]
-  (for [[id state] (get-in @app-state path)]
-    ^{:key id} [plate (conj path id)]))
+  [css-transition-group {:transition-name "zoom"}
+   (for [[id state] (get-in @app-state path)]
+     ^{:key id} [plate (conj path id)])])
 
 (def ^:private title-edit
   (with-meta
@@ -98,9 +103,9 @@
         edit-title! #(reset! title %)
         edit-title? (cursor local-state [:edit-title?])
         set-edit-title! (fn [val] (reset! edit-title? val))
-        toggle-edit-title! (fn [] (set-edit-title! (util/toggle @edit-title?)))
+        toggle-edit-title! (fn [] (set-edit-title! (util/toggle @edit-title?)) nil)
         hide-edit-title! (fn [] (set-edit-title! false))
-        delete! (fn [] (swap! app-state update-in (pop path) dissoc (last path)))]
+        delete! (fn [] (swap! app-state update-in (pop path) dissoc (last path)) nil)]
     (fn [title path local-state]
       [:h6
        [(str "i.mdi-editor-mode-edit.edit-title"
@@ -117,6 +122,7 @@
            :i.mdi-navigation-expand-less)
          {:on-click collapse! :style {:float "left"}}]]])))
 
+
 (defn plate
   [path]
   (let [curr (cursor app-state path)
@@ -126,13 +132,14 @@
         class-name (str "div.gray.card.plate."
                         (depth->class (count path)))]
     (fn [path]
-      [:div.row
+      [:div.row.animated.zoom
        [:div.col.s12
         [(keyword class-name)
          [plate-header title path local-state]
          [(keyword (str "div.card-content"
                         (when (:collapsed? @local-state) ".collapsed")))
-          [:div.content [(:fn @curr) app-state path curr]]
+          (when @curr
+            [:div.content [(:fn @curr) app-state path curr]])
           (child-plates (conj path :plates))
           [socket path]]]]])))
 

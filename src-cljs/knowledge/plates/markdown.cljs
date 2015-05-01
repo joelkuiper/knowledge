@@ -24,7 +24,7 @@
         local-state (atom {:text @text
                            :show-edit? (if @text false true)})
         save! #(reset! text %)
-        toggle-edit! (fn [] (swap! local-state update-in [:show-edit?] util/toggle))]
+        toggle-edit! (fn [] (swap! local-state update-in [:show-edit?] util/toggle) nil)]
     (fn [app-state path curr]
       (let [show-edit? (:show-edit? @local-state)
             id (clojure.string/join path)]
@@ -34,10 +34,10 @@
             [:div
              [text-field id local-state @text]
              [:a.btn.waves-effect.waves-light
-              {:on-click (fn [] (do (save! (:text @local-state)) (toggle-edit!)))} "Save"]
+              {:on-click #(do (save! (:text @local-state)) (toggle-edit!))} "Save"]
              [:span " "]
              [:a.btn.red.waves-effect.waves-light
-              {:on-click (fn [] (do (save! @text) (toggle-edit!)))}
+              {:on-click #(do (save! @text) (toggle-edit!))}
               "Cancel"]]
             [util/dangerous :div (md->html (or @text "*Edit me!*"))])]
          [:div.col.s1
