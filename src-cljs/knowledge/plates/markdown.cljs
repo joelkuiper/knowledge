@@ -1,48 +1,45 @@
 (ns knowledge.plates.markdown
   (:require
-   [reagent.core :as reagent :refer [atom]]
+   [reagent.core :as reagent :refer [atom cursor]]
    [knowledge.util :as util]
    [markdown.core :refer [md->html]]))
 
-
-
 (def text-field
   (with-meta
-    (fn [id form text]
+    (fn [id local-state text]
       [:textarea.materialize-textarea
        {:id id
         :style {:padding "0px"
                 :height "8em"
                 :font-size "13.5px"
                 :overflow-y "auto"}
-        :on-change #(swap! form assoc :text (-> % .-target .-value))}
+        :on-change #(swap! local-state assoc :text (-> % .-target .-value))}
        text])
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
 
 (defn- plate-fn
-  [app-state path state]
-  (let [form (atom {})
-        save! #(swap! app-state assoc-in
-                      (into path [:state :text]) %)
-        toggle-edit! (fn [] (swap! app-state update-in
-                                  (into path [:state :show-edit?]) util/toggle) nil)]
-    (fn [app-state path state]
-      (let [text (get-in @app-state (into path [:state :text]))
-            show-edit? (get-in @app-state (into path [:state :show-edit?]) true)
+  [app-state path curr]
+  (let [text (cursor curr [:state :text])
+        local-state (atom {:text @text
+                           :show-edit? (if @text false true)})
+        save! #(reset! text %)
+        toggle-edit! (fn [] (swap! local-state update-in [:show-edit?] util/toggle))]
+    (fn [app-state path curr]
+      (let [show-edit? (:show-edit? @local-state)
             id (clojure.string/join path)]
         [:div.row
          [:div.col.s11
           (if show-edit?
             [:div
-             [text-field id form text]
+             [text-field id local-state @text]
              [:a.btn.waves-effect.waves-light
-              {:on-click (fn [] (do (save! (:text @form)) (toggle-edit!)))} "Save"]
+              {:on-click (fn [] (do (save! (:text @local-state)) (toggle-edit!)))} "Save"]
              [:span " "]
              [:a.btn.red.waves-effect.waves-light
-              {:on-click (fn [] (do (save! (:text state)) (toggle-edit!)))}
+              {:on-click (fn [] (do (save! @text) (toggle-edit!)))}
               "Cancel"]]
-            [util/dangerous :div (md->html (or text "*Edit me!*"))])]
+            [util/dangerous :div (md->html (or @text "*Edit me!*"))])]
          [:div.col.s1
           [(str "i.mdi-editor-mode-edit.edit-title"
                 (when show-edit? ".teal-text"))

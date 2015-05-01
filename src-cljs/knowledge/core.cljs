@@ -4,7 +4,7 @@
    [knowledge.popup :as popup]
    [knowledge.plates :as plates]
    [knowledge.util :as util]
-   [reagent.core :as reagent :refer [atom]]
+   [reagent.core :as reagent :refer [atom cursor]]
    [historian.core :as hist]
    [historian.keys :as hist-keys]
    [secretary.core :as secretary]
@@ -51,18 +51,17 @@
 
 (defn socket
   [path]
-  (fn [path]
-    [(str "i.socket.waves-effect.waves-light" (when (active-socket? path) ".active"))
-     {:on-click
-      (fn [e]
-        (let [element (.-target e)
-              client-rect (.getBoundingClientRect element)
-              offset (calc-offset client-rect)
-              new-popup {:path path
-                         :visible (util/toggle (popup-visible?))
-                         :offset offset}]
-          (off-the-record
-           (swap! app-state assoc :socket-popup new-popup))))}]))
+  [(str "i.socket.waves-effect.waves-light" (when (active-socket? path) ".active"))
+   {:on-click
+    (fn [e]
+      (let [element (.-target e)
+            client-rect (.getBoundingClientRect element)
+            offset (calc-offset client-rect)
+            new-popup {:path path
+                       :visible (util/toggle (popup-visible?))
+                       :offset offset}]
+        (off-the-record
+         (swap! app-state assoc :socket-popup new-popup))))}])
 
 (defn depth->class
   [depth]
@@ -70,17 +69,17 @@
     (str "grey.lighten-" (max 2 (- 7 (/ depth 2))))))
 
 (declare plate)
-(defn child-plates
+(defn- child-plates
   [path]
   (for [[id state] (get-in @app-state path)]
-    ^{:key id} [plate (conj path id) state]))
+    ^{:key id} [plate (conj path id)]))
 
-(def title-edit
+(def ^:private title-edit
   (with-meta
     (fn [title edit-title! hide-edit-title!]
       (let [stop (fn [] (edit-title! title) (hide-edit-title!))
             save! #(edit-title! (-> % .-target .-value))]
-        (fn [title edit-title! show-edit-title!]
+        (fn [title edit-title! hide-edit-title!]
           [:input.title-edit
            {:type "text"
             :value title
@@ -92,43 +91,48 @@
             :on-change save!}])))
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
-(defn plate-header
-  [title path collapsed?]
-  (let [collapse! (fn [] (swap! collapsed? not) nil)
-        edit-title! (fn [value]
-                      (swap! app-state assoc-in (into path [:title]) value))
-        show-edit-title? (atom false)
-        toggle-edit-title! (fn [] (swap! show-edit-title? not) nil)
-        hide-edit-title! (fn [] (reset! show-edit-title? false) nil)
+(defn- plate-header
+  [title path local-state]
+  (let [collapsed? (cursor local-state [:collapsed?])
+        collapse! (fn [] (swap! collapsed? util/toggle) nil)
+        edit-title! #(reset! title %)
+        edit-title? (cursor local-state [:edit-title?])
+        set-edit-title! (fn [val] (reset! edit-title? val))
+        toggle-edit-title! (fn [] (set-edit-title! (util/toggle @edit-title?)))
+        hide-edit-title! (fn [] (set-edit-title! false))
         delete! (fn [] (swap! app-state update-in (pop path) dissoc (last path)))]
-    (fn [title path collapsed?]
+    (fn [title path local-state]
       [:h6
        [(str "i.mdi-editor-mode-edit.edit-title"
-             (when @show-edit-title? ".teal-text"))
+             (when @edit-title? ".teal-text"))
         {:on-click toggle-edit-title! :style {:float "left"}}]
-       (if @show-edit-title?
-         [title-edit title edit-title! hide-edit-title!]
-         [:span.truncate-80 title])
+       (if (:edit-title? @local-state)
+         [title-edit @title edit-title! hide-edit-title!]
+         [:span.truncate-80 @title])
        [:div {:style {:float "right"}}
         [:i.mdi-navigation-close.delete
          {:on-click delete! :style {:float "left"}}]
-        [(if @collapsed?
+        [(if (:collapsed? @local-state)
            :i.mdi-navigation-expand-more
            :i.mdi-navigation-expand-less)
          {:on-click collapse! :style {:float "left"}}]]])))
 
 (defn plate
-  [path state]
-  (let [collapsed? (atom false)
+  [path]
+  (let [curr (cursor app-state path)
+        title (cursor curr [:title])
+        local-state (atom {:collapsed? false
+                           :edit-title? false})
         class-name (str "div.gray.card.plate."
                         (depth->class (count path)))]
-    (fn [path state]
+    (fn [path]
       [:div.row
        [:div.col.s12
         [(keyword class-name)
-         [plate-header (:title state) path collapsed?]
-         [(keyword (str "div.card-content" (when @collapsed? ".collapsed")))
-          [:div.content [(:fn state) app-state path (:state state)]]
+         [plate-header title path local-state]
+         [(keyword (str "div.card-content"
+                        (when (:collapsed? @local-state) ".collapsed")))
+          [:div.content [(:fn @curr) app-state path curr]]
           (child-plates (conj path :plates))
           [socket path]]]]])))
 

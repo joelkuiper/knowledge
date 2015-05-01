@@ -19,7 +19,6 @@
         filter-fn (if (nil? accepts)
                     (fn [e] (some #{(:type e)} plates/default-types))
                     (fn [e] (some #{(:type e)} accepts)))]
-    (println accepts)
     (group-by :group-title
               (filter filter-fn plates/all))))
 
