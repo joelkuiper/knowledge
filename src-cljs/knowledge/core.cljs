@@ -104,7 +104,7 @@
         edit-title? (cursor local-state [:edit-title?])
         set-edit-title! (fn [val] (reset! edit-title? val))
         toggle-edit-title! (fn [] (set-edit-title! (util/toggle @edit-title?)) nil)
-        hide-edit-title! (fn [] (set-edit-title! false))
+        hide-edit-title! (fn [] (set-edit-title! false) nil)
         delete! (fn [] (swap! app-state update-in (pop path) dissoc (last path)) nil)]
     (fn [title path local-state]
       [:h6
