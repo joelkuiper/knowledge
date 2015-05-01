@@ -1,11 +1,14 @@
 (ns knowledge.core
-  (:require [knowledge.handler :refer [app]]
-            [ring.adapter.jetty :refer [run-jetty]])
+  (:require [knowledge.handler :refer [app init destroy]]
+            [ring.adapter.jetty :refer [run-jetty]]
+            [environ.core :refer [env]])
   (:gen-class))
 
 (defn parse-port [port]
-  (Integer/parseInt (or port (System/getenv "PORT") "3000")))
+  (Integer/parseInt (or port (env :port) "3000")))
 
 (defn -main [& [port]]
   (let [port (parse-port port)]
+    (init)
+    (.addShutdownHook (Runtime/getRuntime) (Thread. destroy))
     (run-jetty app {:port port :join? false})))

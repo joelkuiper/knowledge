@@ -1,5 +1,6 @@
 (ns knowledge.middleware
   (:require [knowledge.session :as session]
+            [knowledge.layout :refer [*servlet-context*]]
             [taoensso.timbre :as timbre]
             [environ.core :refer [env]]
             [selmer.middleware :refer [wrap-error-page]]
@@ -10,7 +11,19 @@
             [ring.middleware.session.memory :refer [memory-store]]
             [ring.middleware.format :refer [wrap-restful-format]]
             
+            
             ))
+
+(defn wrap-servlet-context [handler]
+  (fn [request]
+    (binding [*servlet-context*
+              (if-let [context (:servlet-context request)]
+                ;; If we're not inside a serlvet environment
+                ;; (for example when using mock requests), then
+                ;; .getContextPath might not exist
+                (try (.getContextPath context)
+                     (catch IllegalArgumentException _ context)))]
+      (handler request))))
 
 (defn wrap-internal-error [handler]
   (fn [req]
@@ -32,6 +45,7 @@
         wrap-exceptions)
     handler))
 
+
 (defn production-middleware [handler]
   (-> handler
       
@@ -41,4 +55,6 @@
          :timeout-response (redirect "/")})
       (wrap-defaults
         (assoc-in site-defaults [:session :store] (memory-store session/mem)))
+      wrap-servlet-context
       wrap-internal-error))
+

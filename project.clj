@@ -8,19 +8,19 @@
                  [selmer "0.8.2"]
                  [com.taoensso/timbre "3.4.0"]
                  [com.taoensso/tower "3.0.2"]
-                 [markdown-clj "0.9.65"]
+                 [markdown-clj "0.9.66"]
                  [environ "1.0.0"]
                  [im.chit/cronj "1.4.3"]
                  [compojure "1.3.3"]
                  [ring/ring-defaults "0.1.4"]
                  [ring/ring-session-timeout "0.1.0"]
                  [ring-middleware-format "0.5.0"]
-                 [noir-exception "0.2.3"]
+                 [noir-exception "0.2.5"]
                  [bouncer "0.3.2"]
                  [prone "0.8.1"]
-                 [org.clojure/tools.nrepl "0.2.8"]
-                 [org.clojure/clojurescript "0.0-3196" :scope "provided"]
-                 [org.clojure/tools.reader "0.9.1"]
+                 [org.clojure/tools.nrepl "0.2.10"]
+                 [org.clojure/clojurescript "0.0-3211" :scope "provided"]
+                 [org.clojure/tools.reader "0.9.2"]
 
                  [reagent "0.5.0" :exclusions [cljsjs/react]]
                  [cljsjs/react-with-addons "0.13.1-0"]
@@ -43,7 +43,7 @@
   :plugins [[lein-ring "0.9.1"]
             [lein-environ "1.0.0"]
             [lein-ancient "0.6.5"]
-            [lein-cljsbuild "1.0.4"]]
+            [lein-cljsbuild "1.0.5"]]
 
 
   :ring {:handler knowledge.handler/app
@@ -82,14 +82,10 @@
    :dev {:dependencies [[ring-mock "0.1.5"]
                         [ring/ring-devel "1.3.2"]
                         [pjstadig/humane-test-output "0.7.0"]
-                        [leiningen "2.5.1"]
-                        [figwheel "0.2.6"]
-                        [weasel "0.6.0"]
-                        [com.cemerick/piggieback "0.2.1"]
-                        [org.clojure/tools.nrepl "0.2.10"]]
+                        [weasel "0.6.0"]]
          :source-paths ["env/dev/clj"]
 
-         :plugins [[lein-figwheel "0.2.5"]]
+         :plugins [[lein-figwheel "0.2.9"]]
 
          :cljsbuild
          {:builds

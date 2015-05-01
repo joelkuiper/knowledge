@@ -14,4 +14,4 @@
   (go
     (doseq [fun funs]
       (fun)
-      (<! (timeout 100)))))
+      (<! (timeout 50)))))
