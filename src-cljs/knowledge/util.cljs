@@ -9,9 +9,22 @@
     (js/setTimeout (fn [] (close! c)) ms)
     c))
 
+
+(defn dangerous
+  ([comp content]
+   (dangerous comp nil content))
+  ([comp props content]
+   [comp (assoc props :dangerouslySetInnerHTML {:__html content})]))
+
+(defn toggle
+  [bool]
+  ;; We treat nil as truthy
+  (if (nil? bool) false (not bool)))
+
 (defn wait-a-bit [& funs]
-  "Waits 100 msec between calling functions"
+  "Wait a bit between calling functions.
+  Starts with the first call, then waits in between"
   (go
     (doseq [fun funs]
       (fun)
-      (<! (timeout 50)))))
+      (<! (timeout 150)))))

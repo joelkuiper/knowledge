@@ -4,11 +4,7 @@
    [knowledge.util :as util]
    [markdown.core :refer [md->html]]))
 
-(defn- dangerous
-  ([comp content]
-   (dangerous comp nil content))
-  ([comp props content]
-   [comp (assoc props :dangerouslySetInnerHTML {:__html content})]))
+
 
 (def text-field
   (with-meta
@@ -23,10 +19,6 @@
        text])
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
-(defn- toggle
-  [bool]
-  ;; We treat nil as truthy
-  (if (nil? bool) false (not bool)))
 
 (defn- plate-fn
   [app-state path state]
@@ -34,7 +26,7 @@
         save! #(swap! app-state assoc-in
                       (into path [:state :text]) %)
         toggle-edit! (fn [] (swap! app-state update-in
-                                  (into path [:state :show-edit?]) toggle) nil)]
+                                  (into path [:state :show-edit?]) util/toggle) nil)]
     (fn [app-state path state]
       (let [text (get-in @app-state (into path [:state :text]))
             show-edit? (get-in @app-state (into path [:state :show-edit?]) true)
@@ -50,7 +42,7 @@
              [:a.btn.red.waves-effect.waves-light
               {:on-click (fn [] (util/wait-a-bit #(save! (:text state)) #(toggle-edit!)))}
               "Cancel"]]
-            [dangerous :div (md->html (or text "*Edit me!*"))])]
+            [util/dangerous :div (md->html (or text "*Edit me!*"))])]
          [:div.col.s1
           [(str "i.mdi-editor-mode-edit.edit-title"
                 (when show-edit? ".teal-text"))

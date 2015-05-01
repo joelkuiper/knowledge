@@ -2,7 +2,10 @@
   (:require
    [knowledge.popup :as popup]
    [knowledge.plates :as plates]
+   [knowledge.util :as util]
    [reagent.core :as reagent :refer [atom]]
+   [historian.core :as hist]
+   [historian.keys :as hist-keys]
    [secretary.core :as secretary]
    [reagent.session :as session]
    [reagent-forms.core :refer [bind-fields]]
@@ -26,6 +29,7 @@
            :state {:text intro :show-edit? false})}})
 
 (defonce app-state (atom default-state))
+(hist/record! app-state :app-state)
 
 (defn popup-visible? []
   (get-in @app-state [:socket-popup :visible]))
@@ -54,7 +58,7 @@
               client-rect (.getBoundingClientRect element)
               offset (calc-offset client-rect)
               new-popup {:path path
-                         :visible (not (popup-visible?))
+                         :visible (util/toggle (popup-visible?))
                          :offset offset}]
           (swap! app-state assoc :socket-popup new-popup)))}]))
 
@@ -147,4 +151,5 @@
   (secretary/set-config! :prefix "#")
   (session/put! :page :home)
   (listen-for-window-click)
+  (hist-keys/bind-keys)
   (mount-components))

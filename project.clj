@@ -26,6 +26,7 @@
                  [cljsjs/react-with-addons "0.13.1-0"]
                  [reagent-forms "0.5.0"]
                  [reagent-utils "0.1.4"]
+                 [historian "1.0.7"]
                  [com.lucasbradstreet/cljs-uuid-utils "1.0.1"]
                  [secretary "1.2.3"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
