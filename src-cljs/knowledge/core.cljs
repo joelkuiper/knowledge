@@ -64,10 +64,15 @@
         (off-the-record
          (swap! app-state assoc :socket-popup new-popup))))}])
 
+(def levels 7)
+(defn depth->level
+  [depth]
+  (max 2 (- levels (/ depth 2))))
+
 (defn depth->class
   [depth]
   (when (> depth 2)
-    (str "grey.lighten-" (max 2 (- 7 (/ depth 2))))))
+    (str "grey.lighten-" (depth->level depth))))
 
 (def css-transition-group
   (reagent/adapt-react-class js/React.addons.CSSTransitionGroup))
@@ -107,7 +112,7 @@
         hide-edit-title! (fn [] (set-edit-title! false) nil)
         delete! (fn [] (swap! app-state update-in (pop path) dissoc (last path)) nil)]
     (fn [title path local-state]
-      [:h6
+      [(str "h" (- levels (depth->level (count path))))
        [(str "i.mdi-editor-mode-edit.edit-title"
              (when @edit-title? ".teal-text"))
         {:on-click toggle-edit-title! :style {:float "left"}}]
