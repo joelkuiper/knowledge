@@ -55,5 +55,6 @@
          [css-transition-group {:transition-name "zoom"}
           (when visible?
             [:div.socket-popup.animated.zoom-in
-             {:style {:height height}}
+             {:key "popup"
+              :style {:height height}}
              [types app-state path]])]]))}))
