@@ -27,4 +27,4 @@
   (go
     (doseq [fun funs]
       (fun)
-      (<! (timeout 150)))))
+      (<! (timeout 25)))))

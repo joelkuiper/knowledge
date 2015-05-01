@@ -37,10 +37,10 @@
             [:div
              [text-field id form text]
              [:a.btn.waves-effect.waves-light
-              {:on-click (fn [] (util/wait-a-bit #(save! (:text @form)) #(toggle-edit!)))} "Save"]
+              {:on-click (fn [] (do (save! (:text @form)) (toggle-edit!)))} "Save"]
              [:span " "]
              [:a.btn.red.waves-effect.waves-light
-              {:on-click (fn [] (util/wait-a-bit #(save! (:text state)) #(toggle-edit!)))}
+              {:on-click (fn [] (do (save! (:text state)) (toggle-edit!)))}
               "Cancel"]]
             [util/dangerous :div (md->html (or text "*Edit me!*"))])]
          [:div.col.s1

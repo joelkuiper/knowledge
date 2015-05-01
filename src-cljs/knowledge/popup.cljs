@@ -9,9 +9,9 @@
 
 (defn- add-to-plate
   [app-state path type]
-  (util/wait-a-bit
-   #(swap! app-state assoc-in [:socket-popup :visible] false)
-   #(plates/add-plate app-state path type)))
+  (do
+    (swap! app-state assoc-in [:socket-popup :visible] false)
+    (plates/add-plate app-state path type)))
 
 (defn- filtered-plates
   [app-state path]

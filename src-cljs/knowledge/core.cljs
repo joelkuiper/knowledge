@@ -1,4 +1,5 @@
 (ns knowledge.core
+  (:require-macros [historian.core :refer [off-the-record]])
   (:require
    [knowledge.popup :as popup]
    [knowledge.plates :as plates]
@@ -60,7 +61,8 @@
               new-popup {:path path
                          :visible (util/toggle (popup-visible?))
                          :offset offset}]
-          (swap! app-state assoc :socket-popup new-popup)))}]))
+          (off-the-record
+           (swap! app-state assoc :socket-popup new-popup))))}]))
 
 (defn depth->class
   [depth]
