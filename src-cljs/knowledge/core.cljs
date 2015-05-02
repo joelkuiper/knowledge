@@ -31,6 +31,8 @@
                    :text intro
                    :show-edit? false})}})
 
+(hist/replace-library! (atom []))
+(hist/replace-prophecy! (atom []))
 (defonce app-state (atom default-state))
 (hist/record! app-state :app-state)
 
@@ -150,13 +152,34 @@
           (child-plates (conj path :plates))
           [socket path]]]]])))
 
+
+(defn undo-redo
+  []
+  [:div.undo-redo
+   [(str "a.btn-floating"
+         (if-not (hist/can-undo?)
+           ".disabled"
+           ".waves-effect.waves-light"))
+    {:on-click hist/undo!}
+    [:i.mdi-content-undo]]
+   [:span " "]
+   [(str "a.btn-floating"
+         (if-not (hist/can-redo?)
+           ".disabled"
+           ".waves-effect.waves-light"))
+    {:on-click hist/redo!}
+    [:i.mdi-content-redo]]]
+  )
+
 (defn app []
   (fn []
-    [(str "div.app.row" (when (popup-visible?) ".popup-visible"))
-     [:div.col.s12
-      [popup/popup app-state]
-      (child-plates [:plates])]
-     [socket []]]))
+    [:div
+     [undo-redo]
+     [(str "div.app.row" (when (popup-visible?) ".popup-visible"))
+      [:div.col.s12
+       [popup/popup app-state]
+       (child-plates [:plates])]
+      [socket []]]]))
 
 (defn mount-components []
   (reagent/render-component [app] (.getElementById js/document "app")))
