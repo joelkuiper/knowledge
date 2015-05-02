@@ -52,9 +52,9 @@
 
 (def plate
   {:accepts [:text :study-list]
-   :provides {}
    :name "text"
    :type :text
    :fn plate-fn
    :group-title "standard"
+   :state {:text ""}
    :icon "mdi-editor-format-size"})
