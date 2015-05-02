@@ -1,6 +1,6 @@
 .animated {
-  -webkit-animation-duration: 0.2s;
-  animation-duration: 0.2s;
+  -webkit-animation-duration: 0.125s;
+  animation-duration: 0.125s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
@@ -12,8 +12,8 @@
     transform: scale3d(.3, .3, .3);
   }
 
-  50% {
-    opacity: 1;
+  100% {
+    opacity: 0.99;
   }
 }
 
@@ -24,7 +24,7 @@
     transform: scale3d(.3, .3, .3);
   }
 
-  50% {
+  100% {
     opacity: 0.99;
   }
 }
@@ -43,14 +43,10 @@
     opacity: 1;
   }
 
-  50% {
-    opacity: 0;
+  100% {
+    opacity: 0.01;
     -webkit-transform: scale3d(.3, .3, .3);
     transform: scale3d(.3, .3, .3);
-  }
-
-  100% {
-    opacity: 0;
   }
 }
 
@@ -59,14 +55,10 @@
     opacity: 1;
   }
 
-  50% {
+  100% {
     opacity: 0.01;
     -webkit-transform: scale3d(.3, .3, .3);
     transform: scale3d(.3, .3, .3);
-  }
-
-  100% {
-    opacity: 0.01;
   }
 }
 
