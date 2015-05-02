@@ -4,6 +4,8 @@
    [knowledge.util :as util]
    [markdown.core :refer [md->html]]))
 
+(defonce seen-before? (clojure.core/atom {}))
+
 (def text-field
   (with-meta
     (fn [id local-state text]
@@ -21,10 +23,13 @@
 (defn- plate-fn
   [app-state path curr]
   (let [text (cursor curr [:state :text])
+        first? (get-in @curr [:state :first] false)
+        is-seen-before? (contains? @seen-before? path)
         local-state (atom {:text @text
-                           :show-edit? (if @text false true)})
+                           :show-edit? (and (not first?) (not is-seen-before?))})
         save! #(reset! text %)
         toggle-edit! (fn [] (swap! local-state update-in [:show-edit?] util/toggle) nil)]
+    (swap! seen-before? assoc path true)
     (fn [app-state path curr]
       (let [show-edit? (:show-edit? @local-state)
             id (clojure.string/join path)]

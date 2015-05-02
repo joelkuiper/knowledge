@@ -27,7 +27,9 @@
    :plates
    {(uuid/make-random-squuid)
     (assoc (plates/new-plate :text "Welcome to knowledge")
-           :state {:text intro :show-edit? false})}})
+           :state {:first true
+                   :text intro
+                   :show-edit? false})}})
 
 (defonce app-state (atom default-state))
 (hist/record! app-state :app-state)
