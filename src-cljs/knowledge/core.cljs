@@ -153,28 +153,31 @@
     {:on-click hist/redo!}
     [:i.mdi-content-redo]]])
 
-(defn app []
-  (fn []
-    [:div
-     [undo-redo]
-     [(str "div.app.row" (when (popup/visible?) ".popup-visible"))
-      [:div.col.s12
-       [popup/popup app-state]
-       (child-plates [:plates])]
-      [socket []]]]))
+(def window-click-listener
+  [(dom/getWindow) (.-MOUSEDOWN events/EventType) #(popup/hide!)])
+
+(def app
+  (with-meta
+    (fn []
+      [:div
+       [undo-redo]
+       [(str "div.app.row" (when (popup/visible?) ".popup-visible"))
+        [:div.col.s12
+         [popup/popup app-state]
+         (child-plates [:plates])]
+        [socket []]]])
+    {:component-did-mount
+     (fn [this]
+       (apply events/listen window-click-listener))
+     :component-will-unmount
+     (fn [this]
+       (apply events/unlisten window-click-listener))}))
 
 (defn mount-components []
   (reagent/render-component [app] (.getElementById js/document "app")))
 
-(defn listen-for-window-click []
-  (events/listen
-   (dom/getWindow)
-   (.-MOUSEDOWN events/EventType)
-   #(popup/hide!)))
-
 (defn init! []
   (secretary/set-config! :prefix "#")
   (session/put! :page :home)
-  (listen-for-window-click)
   (hist-keys/bind-keys)
   (mount-components))
