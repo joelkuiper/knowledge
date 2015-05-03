@@ -56,5 +56,4 @@
    :type :text
    :fn plate-fn
    :group-title "standard"
-   :state {:text ""}
    :icon "mdi-editor-format-size"})

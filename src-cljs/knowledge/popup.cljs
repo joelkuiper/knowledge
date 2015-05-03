@@ -1,4 +1,5 @@
 (ns knowledge.popup
+  (:require-macros [historian.core :refer [off-the-record]])
   (:require
    [knowledge.plates :as plates]
    [knowledge.util :as util]
@@ -10,7 +11,8 @@
 (defn- add-to-plate
   [app-state path type]
   (do
-    (swap! app-state assoc-in [:socket-popup :visible] false)
+    (off-the-record
+     (swap! app-state assoc-in [:socket-popup :visible] false))
     (plates/add-plate app-state path type)))
 
 (defn- filtered-plates

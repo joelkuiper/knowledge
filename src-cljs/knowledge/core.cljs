@@ -188,7 +188,7 @@
   (events/listen
    (dom/getWindow)
    (.-MOUSEDOWN events/EventType)
-   #(swap! app-state assoc-in [:socket-popup :visible] false)))
+   #(off-the-record (swap! app-state assoc-in [:socket-popup :visible] false))))
 
 (defn init! []
   (secretary/set-config! :prefix "#")
