@@ -8,19 +8,44 @@
 (def css-transition-group
   (reagent/adapt-react-class js/React.addons.CSSTransitionGroup))
 
+(def state (atom {}))
+
+(defn visible? []
+  (:visible @state))
+
+
+(defn calc-offset
+  [rect]
+  (let [container-x (.-pageXOffset js/window)
+        container-y (.-pageYOffset js/window)]
+    {:top  (+ (.-top rect) container-y)
+     :left (+ (.-left rect) container-x)}))
+
+(defn toggle-popup!
+  [path rect]
+  (let [offset (calc-offset rect)
+        new-popup {:path path
+                   :visible (util/toggle (visible?))
+                   :offset offset}]
+    (reset! state new-popup)))
+
+(defn hide!
+  []
+
+  (swap! state assoc :visible false))
+
 (defn- add-to-plate
   [app-state path type]
   (do
-    (off-the-record
-     (swap! app-state assoc-in [:socket-popup :visible] false))
+    (swap! state assoc :visible false)
     (plates/add-plate app-state path type)))
 
 (defn- filtered-plates
   [app-state path]
   (let [accepts (get-in @app-state (into path [:accepts]))
         filter-fn (if (nil? accepts)
-                    (fn [e] (some #{(:type e)} plates/default-types))
-                    (fn [e] (some #{(:type e)} accepts)))]
+                    (fn [el] (some #{(:type el)} plates/default-types))
+                    (fn [el] (some #{(:type el)} accepts)))]
     (group-by :group-title
               (filter filter-fn plates/all))))
 
@@ -44,16 +69,17 @@
   (reagent/create-class
    {:reagent-render
     (fn [app-state]
-      (let [visible? (get-in @app-state [:socket-popup :visible])
-            offset (get-in @app-state [:socket-popup :offset])
-            path (get-in @app-state [:socket-popup :path])
+      (let [popup-state @state
+            visible? (:visible popup-state)
+            offset (:offset popup-state)
+            path (:path popup-state)
             height 280
             style {:position "absolute"
                    :top (max 0 (- (:top offset) (/ height 2)))
                    :left (+ 25 (:left offset))}]
-        [:div {:id "popup"
-               :style style
-               :on-mouse-down #(.stopPropagation %)}
+        [:div#popup
+         {:style style
+          :on-mouse-down #(.stopPropagation %)}
          [css-transition-group {:transition-name "zoom"}
           (when visible?
             [:div.socket-popup.animated.zoom-in

@@ -23,8 +23,7 @@
     "You can make an interactive document in no time!"]))
 
 (defonce default-state
-  {:socket-popup {:visible false}
-   :plates
+  {:plates
    {(uuid/make-random-squuid)
     (assoc (plates/new-plate :text "Welcome to knowledge")
            :state {:first true
@@ -36,22 +35,12 @@
 (defonce app-state (atom default-state))
 (hist/record! app-state :app-state)
 
-(defn popup-visible? []
-  (get-in @app-state [:socket-popup :visible]))
-
 (defn active-socket?
   [path]
-  (let [socket-popup (:socket-popup @app-state)
+  (let [socket-popup (deref popup/state)
         visible? (:visible socket-popup)
         popup-path (:path socket-popup)]
     (and (= path popup-path) visible?)))
-
-(defn calc-offset
-  [rect]
-  (let [container-x (.-pageXOffset js/window)
-        container-y (.-pageYOffset js/window)]
-    {:top  (+ (.-top rect) container-y)
-     :left (+ (.-left rect) container-x)}))
 
 (defn socket
   [path]
@@ -60,13 +49,8 @@
    {:on-click
     (fn [e]
       (let [element (.-target e)
-            client-rect (.getBoundingClientRect element)
-            offset (calc-offset client-rect)
-            new-popup {:path path
-                       :visible (util/toggle (popup-visible?))
-                       :offset offset}]
-        (off-the-record
-         (swap! app-state assoc :socket-popup new-popup))))}])
+            client-rect (.getBoundingClientRect element)]
+        (popup/toggle-popup! path client-rect)))}])
 
 (def levels 7)
 (defn depth->level
@@ -106,16 +90,17 @@
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
 (defn- plate-header
-  [title path local-state]
-  (let [collapsed? (cursor local-state [:collapsed?])
+  [path local-state]
+  (let [title (plates/title app-state path)
+        collapsed? (cursor local-state [:collapsed?])
         collapse! (fn [] (swap! collapsed? util/toggle) nil)
-        edit-title! #(reset! title %)
+        edit-title! #(plates/set-title! title %)
         edit-title? (cursor local-state [:edit-title?])
         set-edit-title! (fn [val] (reset! edit-title? val))
         toggle-edit-title! (fn [] (set-edit-title! (util/toggle @edit-title?)) nil)
         hide-edit-title! (fn [] (set-edit-title! false) nil)
-        delete! (fn [] (swap! app-state update-in (pop path) dissoc (last path)) nil)]
-    (fn [title path local-state]
+        delete! (fn [] (plates/delete-plate app-state path) nil)]
+    (fn [path local-state]
       [(str "h" (- levels (depth->level (count path))))
        [(str "i.mdi-editor-mode-edit.edit-title"
              (when @edit-title? ".teal-text"))
@@ -135,7 +120,6 @@
 (defn plate
   [path]
   (let [curr (cursor app-state path)
-        title (cursor curr [:title])
         local-state (atom {:collapsed? false
                            :edit-title? false})
         class-name (str "div.gray.card.plate."
@@ -144,7 +128,7 @@
       [:div.row.animated.zoom
        [:div.col.s12
         [(keyword class-name)
-         [plate-header title path local-state]
+         [plate-header path local-state]
          [(keyword (str "div.card-content"
                         (when (:collapsed? @local-state) ".collapsed")))
           (when @curr
@@ -153,8 +137,7 @@
           [socket path]]]]])))
 
 
-(defn undo-redo
-  []
+(defn undo-redo []
   [:div.undo-redo
    [(str "a.btn-floating"
          (if-not (hist/can-undo?)
@@ -168,14 +151,13 @@
            ".disabled"
            ".waves-effect.waves-light"))
     {:on-click hist/redo!}
-    [:i.mdi-content-redo]]]
-  )
+    [:i.mdi-content-redo]]])
 
 (defn app []
   (fn []
     [:div
      [undo-redo]
-     [(str "div.app.row" (when (popup-visible?) ".popup-visible"))
+     [(str "div.app.row" (when (popup/visible?) ".popup-visible"))
       [:div.col.s12
        [popup/popup app-state]
        (child-plates [:plates])]
@@ -188,7 +170,7 @@
   (events/listen
    (dom/getWindow)
    (.-MOUSEDOWN events/EventType)
-   #(off-the-record (swap! app-state assoc-in [:socket-popup :visible] false))))
+   #(popup/hide!)))
 
 (defn init! []
   (secretary/set-config! :prefix "#")
