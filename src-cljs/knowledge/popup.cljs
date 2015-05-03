@@ -10,9 +10,7 @@
 
 (def state (atom {}))
 
-(defn visible? []
-  (:visible @state))
-
+(defn visible? [] (:visible @state))
 
 (defn calc-offset
   [rect]
@@ -29,9 +27,7 @@
                    :offset offset}]
     (reset! state new-popup)))
 
-(defn hide!
-  []
-
+(defn hide! []
   (swap! state assoc :visible false))
 
 (defn- add-to-plate
