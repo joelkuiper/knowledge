@@ -1,5 +1,4 @@
 (ns knowledge.popup
-  (:require-macros [historian.core :refer [off-the-record]])
   (:require
    [knowledge.plates :as plates]
    [knowledge.util :as util]

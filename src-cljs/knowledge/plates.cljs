@@ -5,7 +5,7 @@
    [knowledge.plates.study-list :as study-list]
    [cljs-uuid-utils.core :as uuid]))
 
-(defonce untitled-counter (atom {}))
+(def untitled-counter (atom {}))
 
 (defn untitled
   [type]
