@@ -11,18 +11,7 @@
 
 html {
   margin-top: 2em;
-  background: none repeat scroll 0% 0% #ECECEC;
-}
-
-.undo-redo {
-    position: fixed;
-    bottom: 2em;
-    left: 2em;
-    opacity: 0.4;
-    @include transition(opacity .1s ease-in-out);
-    &:hover {
-        opacity: 1;
-    }
+  background: none repeat scroll 0% 0% #FCFCFC;
 }
 
 i.socket {
@@ -180,4 +169,17 @@ i.socket {
       cursor: default;
     }
   }
+}
+
+
+.undo-redo {
+    position: fixed;
+    bottom: 2em;
+    left: 2em;
+    opacity: 0.4;
+    @include transition(opacity .1s ease-in-out);
+    @extend .no-select;
+    &:hover {
+        opacity: 1;
+    }
 }
