@@ -129,8 +129,8 @@
        [:div.col.s12
         [(keyword class-name)
          [plate-header path local-state]
-         [(keyword (str "div.card-content"
-                        (when (:collapsed? @local-state) ".collapsed")))
+         [(str "div.card-content"
+               (when (:collapsed? @local-state) ".collapsed"))
           (when @curr
             [:div.content [(:fn @curr) app-state path curr]])
           (child-plates (conj path :plates))

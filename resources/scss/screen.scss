@@ -33,6 +33,7 @@ i.socket {
   @include transition(opacity .20s ease);
   @extend .mdi-action-label-outline;
   &:hover, &.active {
+    visibility: visible !important;
     opacity: 1 !important;
     color: color("grey", "darken-4");
     @extend .mdi-action-label;
@@ -49,6 +50,7 @@ i.socket {
   position: absolute;
   z-index: 100;
   @extend .z-depth-3;
+  @extend .no-select;
   background-color: white;
   width: 18em;
 
@@ -166,6 +168,7 @@ i.socket {
   &.popup-visible {
     i.socket {
       opacity: 0;
+      visibility: hidden;
       cursor: default;
     }
   }

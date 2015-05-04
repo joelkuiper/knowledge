@@ -53,8 +53,9 @@
       [:div.types
        (for [plate group]
          ^{:key (:type plate)}
-         [:div.type {:on-click
-                     (fn [] (add-to-plate app-state path (:type plate)))}
+         [:div.type
+          {:on-click
+           (fn [] (add-to-plate app-state path (:type plate)))}
           [(str "i." (:icon plate))]
           [:br]
           [:span (:name plate)]])]])])
