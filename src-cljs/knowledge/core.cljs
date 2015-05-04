@@ -74,19 +74,22 @@
 
 (def ^:private title-edit
   (with-meta
-    (fn [title edit-title! hide-edit-title!]
-      (let [stop (fn [] (edit-title! title) (hide-edit-title!))
-            save! #(edit-title! (-> % .-target .-value))]
-        (fn [title edit-title! hide-edit-title!]
-          [:input.title-edit
-           {:type "text"
-            :value title
-            :on-key-down #(case (.-which %)
-                            13 (do (save! %) (hide-edit-title!))
-                            27 (stop)
-                            nil)
-            :on-blur #(do (save! %) (hide-edit-title!))
-            :on-change save!}])))
+    (fn [title hide-edit-title!]
+      (let [temp-title (atom @title)]
+        (fn [title hide-edit-title!]
+          (let [stop (fn [] (hide-edit-title!))
+                hold-on #(reset! temp-title (-> % .-target .-value))
+                save! (fn [e] (reset! title @temp-title))]
+            (fn [title hide-edit-title!]
+              [:input.title-edit
+               {:type "text"
+                :value @temp-title
+                :on-key-down #(case (.-which %)
+                                13 (do (save! %) (stop))
+                                27 (stop)
+                                nil)
+                :on-blur #(do (save! %) (stop))
+                :on-change hold-on}])))))
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
 (defn- plate-header
@@ -94,8 +97,9 @@
   (let [title (plates/title app-state path)
         collapsed? (cursor local-state [:collapsed?])
         collapse! (fn [] (swap! collapsed? util/toggle) nil)
-        edit-title! #(plates/set-title! title %)
+
         edit-title? (cursor local-state [:edit-title?])
+
         set-edit-title! (fn [val] (reset! edit-title? val))
         toggle-edit-title! (fn [] (set-edit-title! (util/toggle @edit-title?)) nil)
         hide-edit-title! (fn [] (set-edit-title! false) nil)
@@ -106,7 +110,7 @@
              (when @edit-title? ".teal-text"))
         {:on-click toggle-edit-title! :style {:float "left"}}]
        (if (:edit-title? @local-state)
-         [title-edit @title edit-title! hide-edit-title!]
+         [title-edit title hide-edit-title!]
          [:span.truncate-80 @title])
        [:div {:style {:float "right"}}
         [:i.mdi-navigation-close.delete
