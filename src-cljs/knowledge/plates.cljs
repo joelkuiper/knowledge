@@ -16,17 +16,13 @@
   [:text :study-list])
 
 (def all
-  [markdown/plate
-   study-list/plate])
-
-(defn find-type
-  [type]
-  (first (filter #(= type (:type %)) all)))
+  {:text [markdown/plate markdown/build]
+   :study-list [study-list/plate study-list/build]})
 
 (defn new-plate
   [type title]
   (let [new-title (or title (untitled type))
-        plate (find-type type)
+        [plate builder] (get all type)
         base {:title new-title
               :plates {}
               :state {}}]
@@ -46,6 +42,11 @@
 (defn set-title!
   [title-curr title]
   (reset! title-curr title))
+
+(defn builder
+  [type]
+  (let [[plate builder]  (get all type)]
+    builder))
 
 (defn title
   [app-state path]

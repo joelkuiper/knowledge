@@ -20,7 +20,7 @@
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
 
-(defn- plate-fn
+(defn build
   [app-state path curr]
   (let [text (cursor curr [:state :text])
         first? (get-in @curr [:state :first] false)
@@ -54,6 +54,5 @@
   {:accepts [:text :study-list]
    :name "text"
    :type :text
-   :fn plate-fn
    :group-title "standard"
    :icon "mdi-editor-format-size"})

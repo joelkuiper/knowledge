@@ -42,7 +42,7 @@
                     (fn [el] (some #{(:type el)} plates/default-types))
                     (fn [el] (some #{(:type el)} accepts)))]
     (group-by :group-title
-              (filter filter-fn plates/all))))
+              (filter filter-fn (map first (vals plates/all))))))
 
 (defn- types
   [app-state path]

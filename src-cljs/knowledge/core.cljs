@@ -136,7 +136,7 @@
          [(str "div.card-content"
                (when (:collapsed? @local-state) ".collapsed"))
           (when @curr
-            [:div.content [(:fn @curr) app-state path curr]])
+            [:div.content [(plates/builder (:type @curr)) app-state path curr]])
           (child-plates (conj path :plates))
           [socket path]]]]])))
 
