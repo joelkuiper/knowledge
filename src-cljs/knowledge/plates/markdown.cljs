@@ -1,5 +1,6 @@
 (ns knowledge.plates.markdown
   (:require
+   [knowledge.plates.base.text :as text]
    [reagent.core :as reagent :refer [atom cursor]]
    [knowledge.util :as util]
    [markdown.core :refer [md->html]]))
@@ -20,7 +21,7 @@
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
 
-(defn build
+(defn builder
   [app-state path curr]
   (let [text (cursor curr [:state :text])
         first? (get-in @curr [:state :first] false)
@@ -50,9 +51,14 @@
                 (when show-edit? ".teal-text"))
            {:on-click toggle-edit! :style {:float "right"}}]]]))))
 
+
+(def t ::markdown)
+(derive t ::text/text)
+
 (def plate
-  {:accepts [:text :study-list]
+  {:sockets [:knowledge.plates.base.text/text
+             :knowledge.plates.study-list/study-list]
    :name "text"
-   :type :text
+   :type t
    :group-title "standard"
    :icon "mdi-editor-format-size"})

@@ -35,12 +35,18 @@
     (swap! state assoc :visible false)
     (plates/add-plate app-state path type)))
 
+(defn- with-descendants
+  [type]
+  (into (descendants type) [type]))
+
 (defn- filtered-plates
   [app-state path]
-  (let [accepts (get-in @app-state (into path [:accepts]))
-        filter-fn (if (nil? accepts)
-                    (fn [el] (some #{(:type el)} plates/default-types))
-                    (fn [el] (some #{(:type el)} accepts)))]
+  (let [sockets (get-in @app-state (into path [:sockets]))
+        types #(mapcat with-descendants %)
+        filter-fn (if (nil? sockets)
+                    (fn [el] (some #{(:type el)} (types plates/default-types)))
+                    (fn [el] (some #{(:type el)} (types sockets))))]
+    (print (types plates/default-types))
     (group-by :group-title
               (filter filter-fn (map first (vals plates/all))))))
 

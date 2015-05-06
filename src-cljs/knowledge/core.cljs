@@ -12,6 +12,7 @@
    [reagent-forms.core :refer [bind-fields]]
    [goog.dom :as dom]
    [goog.events :as events]
+   [knowledge.plates.markdown :as markdown]
    [cljs-uuid-utils.core :as uuid]
    [ajax.core :refer [GET POST]]))
 
@@ -22,10 +23,11 @@
     "These plates can be as complex, or simple, as you'd like."
     "You can make an interactive document in no time!"]))
 
-(defonce default-state
+(def default-state
   {:plates
    {(uuid/make-random-squuid)
-    (assoc (plates/new-plate :text "Welcome to knowledge")
+    (assoc (plates/new-plate markdown/t
+                             "Welcome to knowledge")
            :state {:first true
                    :text intro
                    :show-edit? false})}})
@@ -131,7 +133,7 @@
     (fn [path]
       [:div.row.animated.zoom
        [:div.col.s12
-        [(keyword class-name)
+        [class-name
          [plate-header path local-state]
          [(str "div.card-content"
                (when (:collapsed? @local-state) ".collapsed"))

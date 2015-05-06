@@ -1,7 +1,7 @@
 (ns knowledge.handler
   (:require [compojure.core :refer [defroutes routes]]
             [knowledge.routes.home :refer [home-routes]]
-            
+
             [knowledge.middleware
              :refer [development-middleware production-middleware]]
             [knowledge.session :as session]
@@ -69,8 +69,7 @@
 
 (def app
   (-> (routes
-        home-routes
-        
-        base-routes)
-      development-middleware
-      production-middleware))
+      home-routes
+      base-routes)
+     development-middleware
+     production-middleware))
