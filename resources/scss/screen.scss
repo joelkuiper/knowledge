@@ -21,7 +21,6 @@ i.socket {
   font-family: "#{$font-mdi}";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  speak: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -35,6 +34,7 @@ i.socket {
   &:hover, &.active {
     visibility: visible !important;
     opacity: 1 !important;
+    transition-delay: 0s;
     color: color("grey", "darken-4");
     @extend .mdi-action-label;
   }
@@ -167,8 +167,9 @@ i.socket {
 .app {
   &.popup-visible {
     i.socket {
-      opacity: 0;
       visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s linear 0.1s,opacity 0.1s linear;
       cursor: default;
     }
   }

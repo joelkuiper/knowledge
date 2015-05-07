@@ -1,7 +1,8 @@
 (ns knowledge.plates.study-list
   (:require [knowledge.plates.base :as base]))
 
-(defn builder [app-state path state] nil)
+(defn builder [app-state path state]
+  (fn [app-state path state] nil))
 
 (def t ::study-list)
 

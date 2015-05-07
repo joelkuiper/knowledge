@@ -85,7 +85,7 @@
             (fn [title hide-edit-title!]
               [:input.title-edit
                {:type "text"
-                :value @temp-title
+                :default-value @title
                 :on-key-down #(case (.-which %)
                                 13 (do (save! %) (stop))
                                 27 (stop)
