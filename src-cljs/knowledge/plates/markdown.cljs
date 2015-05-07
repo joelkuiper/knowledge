@@ -58,7 +58,7 @@
 (def plate
   {:sockets [:knowledge.plates.base.text/text
              :knowledge.plates.study-list/study-list]
-   :name "text"
+   :name "markdown"
    :type t
    :group-title "standard"
    :icon "mdi-editor-format-size"})

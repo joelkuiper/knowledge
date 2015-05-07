@@ -1,6 +1,7 @@
 (ns knowledge.popup
   (:require
    [knowledge.plates :as plates]
+   [knowledge.plates.core :refer [all-plates default-plates]]
    [knowledge.util :as util]
    [reagent.core :as reagent :refer [atom]]))
 
@@ -44,11 +45,10 @@
   (let [sockets (get-in @app-state (into path [:sockets]))
         types #(mapcat with-descendants %)
         filter-fn (if (nil? sockets)
-                    (fn [el] (some #{(:type el)} (types plates/default-types)))
+                    (fn [el] (some #{(:type el)} (types default-plates)))
                     (fn [el] (some #{(:type el)} (types sockets))))]
-    (print (types plates/default-types))
     (group-by :group-title
-              (filter filter-fn (map first (vals plates/all))))))
+              (filter filter-fn (map first (vals all-plates))))))
 
 (defn- types
   [app-state path]

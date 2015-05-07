@@ -1,8 +1,6 @@
 (ns knowledge.plates
   (:require
-   [knowledge.plates.markdown :as markdown]
-   [knowledge.plates.base.text :as text]
-   [knowledge.plates.study-list :as study-list]
+   [knowledge.plates.core :refer [all-plates default-plates]]
    [reagent.core :as reagent :refer [cursor]]
    [cljs-uuid-utils.core :as uuid]))
 
@@ -13,20 +11,10 @@
   (str "Untitled " (name type) " "
        (get (swap! untitled-counter update type inc) type)))
 
-(def default-types
-  [::text/text study-list/t])
-
-;; TODO Fix this mess, pity you can't use vars in ClojureScript
-;; Because, then you could just traverse the descendants (descendants :knowledge.plates.base/base)
-(def all
-  {markdown/t   [markdown/plate   markdown/builder]
-   study-list/t [study-list/plate study-list/builder]})
-;; END TODO
-
 (defn new-plate
   [type title]
   (let [new-title (or title (untitled type))
-        [plate builder] (get all type)
+        [plate builder] (get all-plates type)
         base {:title new-title
               :plates {}
               :state {}}]
@@ -45,7 +33,7 @@
 
 (defn builder
   [type]
-  (second (get all type)))
+  (second (get all-plates type)))
 
 (defn set-title!
   [title-curr title]
