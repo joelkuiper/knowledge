@@ -16,8 +16,8 @@
                 :height "8em"
                 :font-size "13.5px"
                 :overflow-y "auto"}
-        :on-change #(swap! local-state assoc :text (-> % .-target .-value))}
-       text])
+        :default-value text
+        :on-change #(swap! local-state assoc :text (-> % .-target .-value))}])
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
 
@@ -56,9 +56,7 @@
 (derive t ::text/text)
 
 (def plate
-  {:sockets [:knowledge.plates.base.text/text
-             :knowledge.plates.study-list/study-list]
-   :name "markdown"
+  {:name "markdown"
    :type t
    :group-title "standard"
    :icon "mdi-editor-format-size"})
