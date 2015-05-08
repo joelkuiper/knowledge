@@ -21,6 +21,7 @@
                  [org.clojure/tools.nrepl "0.2.10"]
                  [org.clojure/clojurescript "0.0-3211" :scope "provided"]
                  [org.clojure/tools.reader "0.9.2"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
 
                  [reagent "0.5.0" :exclusions [cljsjs/react]]
                  [cljsjs/react-with-addons "0.13.1-0"]

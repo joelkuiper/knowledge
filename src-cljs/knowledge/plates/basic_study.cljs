@@ -5,8 +5,12 @@
 
 
 (defn builder [app-state path state]
-  (add-watch state :plates (fn [e] (print e)))
-  (fn [app-state path state] [:span "yes"]))
+  (fn [app-state path state]
+
+    [:span
+     #(swap! state assoc :state {1 "foobar"})
+     "yes"
+     ]))
 
 (def t ::basic-study)
 
@@ -14,6 +18,7 @@
 (def plate
   {:sockets :none
    :type t
+   :state {"1" "2"}
    :name "study"
    :group-title "studies"
    :children-above? false
