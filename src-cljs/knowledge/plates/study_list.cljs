@@ -9,9 +9,12 @@
 
 (enable-console-print!)
 
-
 (def select-child-states
   (comp (map :plates) (map vals) (map (fn [e] (map :state e)))))
+
+(defn debug
+  [studies]
+  (apply + (map :test studies)))
 
 (defn builder
   [app-state path state]
@@ -30,7 +33,7 @@
         (add-watch state ::plates (fn [_ _ old new] (put! c new))))
       :reagent-render
       (fn [app-state path state]
-        [:span (str (:studies @local))])})))
+        [:span (debug (:studies @local))])})))
 
 
 (def t ::study-list)

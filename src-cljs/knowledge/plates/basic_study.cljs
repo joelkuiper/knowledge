@@ -1,16 +1,18 @@
 (ns knowledge.plates.basic-study
   (:require
    [reagent.core :as reagent :refer [atom cursor]]
+   [reagent-forms.core :refer [bind-fields]]
    [knowledge.plates.base.study :as study]))
 
 
-(defn builder [app-state path state]
-  (fn [app-state path state]
+(def form-template
+  [:div [:input {:field :numeric :id :test}]])
 
-    [:span
-     #(swap! state assoc :state {1 "foobar"})
-     "yes"
-     ]))
+(defn builder [app-state path state]
+  (let [curr (cursor state [:state])]
+    (fn [app-state path state]
+      [:div
+       [bind-fields form-template curr]])))
 
 (def t ::basic-study)
 
@@ -18,7 +20,7 @@
 (def plate
   {:sockets :none
    :type t
-   :state {"1" "2"}
+   :state {}
    :name "study"
    :group-title "studies"
    :children-above? false
