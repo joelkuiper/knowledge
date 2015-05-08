@@ -12,4 +12,5 @@
    :type t
    :name "study list"
    :group-title "lists"
+   :children-above? true
    :icon "mdi-editor-format-list-bulleted"})

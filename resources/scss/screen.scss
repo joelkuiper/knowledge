@@ -1,6 +1,7 @@
 @import "materialize.scss";
 @import "animation.scss";
 
+
 @mixin transition($args...) {
   -webkit-transition: $args;
   -moz-transition: $args;
@@ -12,6 +13,18 @@
 html {
   margin-top: 2rem;
   background: none repeat scroll 0% 0% #FCFCFC;
+  font-family: "proxima-nova", "roboto", arial, sans-serif;
+  font-weight: 400;
+  -moz-font-feature-settings: "liga=1, dlig=1";
+  -ms-font-feature-settings: "liga", "dlig";
+  -webkit-font-feature-settings: "liga", "dlig";
+  -o-font-feature-settings: "liga", "dlig";
+  font-feature-settings: "liga", "dlig";
+
+}
+
+body {
+  color: #212121;
 }
 
 i.socket {
@@ -145,8 +158,6 @@ i.socket {
       font-weight: 400;
       font-size: 13.5px;
       line-height: 20.25px;
-      color: rgba(0,0,0,0.71);
-
     }
 
     .collapsed {
