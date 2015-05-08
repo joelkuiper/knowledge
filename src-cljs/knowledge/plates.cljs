@@ -7,14 +7,16 @@
 (def untitled-counter (atom {}))
 
 (defn untitled
-  [type]
-  (str "Untitled " (name type) " "
-       (get (swap! untitled-counter update type inc) type)))
+  [name]
+  (str "Untitled " name " "
+       (get (swap! untitled-counter update name inc) name)))
+
+(defn get-by-type [type] (get all-plates type))
 
 (defn new-plate
   [type title]
-  (let [new-title (or title (untitled type))
-        [plate builder] (get all-plates type)
+  (let [[plate builder] (get-by-type type)
+        new-title (or title (untitled (:name plate)))
         base {:title new-title
               :plates {}
               :state {}}]
@@ -33,7 +35,7 @@
 
 (defn builder
   [type]
-  (second (get all-plates type)))
+  (second (get-by-type type)))
 
 (defn set-title!
   [title-curr title]

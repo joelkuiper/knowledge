@@ -130,19 +130,20 @@
                            :edit-title? false})
         class-name (str "div.gray.card.plate."
                         (depth->class (count path)))
-        children-above? (:children-above? @curr)]
+        children-above? (:children-above? @curr)
+        has-sockets? (not= :none (:sockets @curr))]
     (fn [path]
       [:div.row.animated.zoom
        [:div.col.s12
         [class-name
          [plate-header path local-state]
          [(str "div.card-content" (when (:collapsed? @local-state) ".collapsed"))
-          (when children-above?
+          (when (and children-above? has-sockets?)
             [:div
              (child-plates (conj path :plates))
              [socket path]])
           (when @curr [:div.content [(plates/builder (:type @curr)) app-state path curr]])
-          (when-not children-above?
+          (when (and (not children-above?) has-sockets?)
             [:div.div
              (child-plates (conj path :plates))
              [socket path]])]]]])))

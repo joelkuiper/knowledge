@@ -1,1 +1,0 @@
-(ns knowledge.plates.base)

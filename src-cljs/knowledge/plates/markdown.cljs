@@ -20,7 +20,6 @@
         :on-change #(swap! local-state assoc :text (-> % .-target .-value))}])
     {:component-did-mount #(.focus (reagent/dom-node %))}))
 
-
 (defn builder
   [app-state path curr]
   (let [text (cursor curr [:state :text])
