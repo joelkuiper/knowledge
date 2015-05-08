@@ -58,5 +58,6 @@
 (def plate
   {:name "markdown"
    :type t
+   :children-above? false
    :group-title "standard"
    :icon "mdi-editor-format-size"})

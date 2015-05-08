@@ -129,18 +129,23 @@
         local-state (atom {:collapsed? false
                            :edit-title? false})
         class-name (str "div.gray.card.plate."
-                        (depth->class (count path)))]
+                        (depth->class (count path)))
+        children-above? (:children-above? @curr)]
     (fn [path]
       [:div.row.animated.zoom
        [:div.col.s12
         [class-name
          [plate-header path local-state]
-         [(str "div.card-content"
-               (when (:collapsed? @local-state) ".collapsed"))
-          (when @curr
-            [:div.content [(plates/builder (:type @curr)) app-state path curr]])
-          (child-plates (conj path :plates))
-          [socket path]]]]])))
+         [(str "div.card-content" (when (:collapsed? @local-state) ".collapsed"))
+          (when children-above?
+            [:div
+             (child-plates (conj path :plates))
+             [socket path]])
+          (when @curr [:div.content [(plates/builder (:type @curr)) app-state path curr]])
+          (when-not children-above?
+            [:div.div
+             (child-plates (conj path :plates))
+             [socket path]])]]]])))
 
 
 (defn undo-redo []
