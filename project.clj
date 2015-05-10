@@ -4,7 +4,10 @@
   :url "http://example.com/FIXME"
 
   :dependencies [[org.clojure/clojure "1.7.0-beta2"]
-                 [ring-server "0.4.0"]
+
+                 [ring-server "0.4.0" :exclusions [ring-clojure/ring]]
+                 [ring "1.4.0-beta2"]
+
                  [selmer "0.8.2"]
                  [com.taoensso/timbre "3.4.0"]
                  [com.taoensso/tower "3.0.2"]
@@ -19,7 +22,7 @@
                  [bouncer "0.3.2"]
                  [prone "0.8.1"]
                  [org.clojure/tools.nrepl "0.2.10"]
-                 [org.clojure/clojurescript "0.0-3211" :scope "provided"]
+                 [org.clojure/clojurescript "0.0-3255" :scope "provided"]
                  [org.clojure/tools.reader "0.9.2"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
 
@@ -82,7 +85,7 @@
 
              :aot :all}
    :dev {:dependencies [[ring-mock "0.1.5"]
-                        [ring/ring-devel "1.3.2"]
+                        [ring/ring-devel "1.4.0-beta2"]
                         [pjstadig/humane-test-output "0.7.0"]
                         [weasel "0.6.0"]]
          :source-paths ["env/dev/clj"]
