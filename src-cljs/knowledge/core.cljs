@@ -35,7 +35,7 @@
 
 (hist/replace-library! (atom []))
 (hist/replace-prophecy! (atom []))
-(def app-state (atom default-state))
+(defonce app-state (atom default-state))
 (hist/record! app-state :app-state)
 
 (defn active-socket?

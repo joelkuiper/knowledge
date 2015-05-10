@@ -1,8 +1,8 @@
-(ns knowledge.plates.core
-  (:require
-   [knowledge.plates.markdown :as markdown]
-   [knowledge.plates.basic-study :as basic-study]
-   [knowledge.plates.study-list :as study-list]))
+(ns ^:figwheel-always knowledge.plates.core
+    (:require
+     [knowledge.plates.markdown :as markdown]
+     [knowledge.plates.basic-study :as basic-study]
+     [knowledge.plates.study-list :as study-list]))
 
 (def default-plates
   [:knowledge.plates.base.text/text
