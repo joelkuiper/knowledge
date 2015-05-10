@@ -15,7 +15,6 @@
        [bind-fields form-template curr]])))
 
 (def t ::basic-study)
-
 (derive t ::study/study)
 (def plate
   {:sockets :none

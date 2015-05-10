@@ -35,7 +35,7 @@
 
 (hist/replace-library! (atom []))
 (hist/replace-prophecy! (atom []))
-(defonce app-state (atom default-state))
+(def app-state (atom default-state))
 (hist/record! app-state :app-state)
 
 (defn active-socket?
@@ -126,28 +126,28 @@
 
 (defn plate
   [path]
-  (let [curr (cursor app-state path)
-        local-state (atom {:collapsed? false
+  (let [local-state (atom {:collapsed? false
                            :edit-title? false})
         class-name (str "div.gray.card.plate."
-                        (depth->class (count path)))
-        children-above? (:children-above? @curr)
-        has-sockets? (not= :none (:sockets @curr))]
+                        (depth->class (count path)))]
     (fn [path]
-      [:div.row.animated.zoom
-       [:div.col.s12
-        [class-name
-         [plate-header path local-state]
-         [(str "div.card-content" (when (:collapsed? @local-state) ".collapsed"))
-          (when (and children-above? has-sockets?)
-            [:div
-             (child-plates (conj path :plates))
-             [socket path]])
-          (when @curr [:div.content [(plates/builder (:type @curr)) app-state path curr]])
-          (when (and (not children-above?) has-sockets?)
-            [:div.div
-             (child-plates (conj path :plates))
-             [socket path]])]]]])))
+      (let [curr (cursor app-state path)
+            children-above? (:children-above? @curr)
+            has-sockets? (not= :none (:sockets @curr))]
+        [:div.row.animated.zoom
+         [:div.col.s12
+          [class-name
+           [plate-header path local-state]
+           [(str "div.card-content" (when (:collapsed? @local-state) ".collapsed"))
+            (when (and children-above? has-sockets?)
+              [:div
+               (child-plates (conj path :plates))
+               [socket path]])
+            (when @curr [:div.content [(plates/builder (:type @curr)) app-state path curr]])
+            (when (and (not children-above?) has-sockets?)
+              [:div.div
+               (child-plates (conj path :plates))
+               [socket path]])]]]]))))
 
 
 (defn undo-redo []

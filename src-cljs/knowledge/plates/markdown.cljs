@@ -5,7 +5,7 @@
    [knowledge.util :as util]
    [markdown.core :refer [md->html]]))
 
-(defonce seen-before? (clojure.core/atom {}))
+(def seen-before? (clojure.core/atom {}))
 
 (def text-field
   (with-meta
