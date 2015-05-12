@@ -87,10 +87,12 @@
    :dev {:dependencies [[ring-mock "0.1.5"]
                         [ring/ring-devel "1.4.0-beta2"]
                         [pjstadig/humane-test-output "0.7.0"]
-                        [weasel "0.6.0"]]
+                        [weasel "0.6.0"]
+                        [org.clojure/tools.nrepl "0.2.10"]
+                        [com.cemerick/piggieback "0.2.1"]]
          :source-paths ["env/dev/clj"]
 
-         :plugins [[lein-figwheel "0.2.9"]]
+         :plugins [[lein-figwheel "0.3.1"]]
 
          :cljsbuild
          {:builds
