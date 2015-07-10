@@ -1,7 +1,7 @@
 (defproject knowledge "0.1.0-SNAPSHOT"
 
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "The story of knowledge"
+  :url "https://joelkuiper.eu/knowledge"
 
   :dependencies [[org.clojure/clojure "1.7.0-beta2"]
 

@@ -6,4 +6,7 @@ Prototype code of: https://joelkuiper.eu/knowledge
 
 Video: https://www.youtube.com/watch?v=6xt53GlM4hM
 
-*DISCLAIMER* THIS IS VERY EXPERIMENTAL PROTOTYPE CODE
+**DISCLAIMER** THIS IS VERY EXPERIMENTAL PROTOTYPE CODE
+
+Copyright (c) 2015 Joël Kuiper.
+All rights reserved. No warranty, explicit or implicit, provided.
