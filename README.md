@@ -1,19 +1,9 @@
-# knowledge
+# A brief study in knowledge documents
 
-FIXME
+TL;DR: Use Graphical User Interface (GUI) components as Lisp s-expressions to generate dynamic "knowledge" documents.
 
-## Prerequisites
+Prototype code of: https://joelkuiper.eu/knowledge
 
-You will need [Leiningen][1] 2.0 or above installed.
+Video: https://www.youtube.com/watch?v=6xt53GlM4hM
 
-[1]: https://github.com/technomancy/leiningen
-
-## Running
-
-To start a web server for the application, run:
-
-    lein ring server
-
-## License
-
-Copyright © 2015 FIXME
+*DISCLAIMER* THIS IS VERY EXPERIMENTAL PROTOTYPE CODE
