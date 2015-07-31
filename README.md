@@ -10,7 +10,7 @@ To start a web server for the application, run:
 
     lein ring server
 
-For development `lein fighweel` is also supported.
+For development `lein figwheel` is also supported.
 
 **DISCLAIMER** THIS IS VERY EXPERIMENTAL PROTOTYPE CODE
 
